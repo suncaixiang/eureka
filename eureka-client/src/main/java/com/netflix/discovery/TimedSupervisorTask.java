@@ -99,6 +99,7 @@ public class TimedSupervisorTask extends TimerTask {
             }
 
             if (!scheduler.isShutdown()) {
+                //将线程再次放入scheduler中，延迟一段时间再次调用
                 scheduler.schedule(this, delay.get(), TimeUnit.MILLISECONDS);
             }
         }

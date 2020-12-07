@@ -48,6 +48,9 @@ import com.netflix.eureka.util.EurekaMonitors;
  * A <em>jersey</em> resource that handles request related to all
  * {@link com.netflix.discovery.shared.Applications}.
  *
+ *
+ * 接受注册eureka client的注册请求:/{version}/apps/{appId}
+ *
  * @author Karthik Ranganathan, Greg Kim
  *
  */
@@ -79,12 +82,16 @@ public class ApplicationsResource {
     /**
      * Gets information about a particular {@link com.netflix.discovery.shared.Application}.
      *
+     *
+     *
      * @param version
      *            the version of the request.
      * @param appId
      *            the unique application identifier (which is the name) of the
      *            application.
      * @return information about a particular application.
+     *
+     * 接受服务注册的请求处理
      */
     @Path("{appId}")
     public ApplicationResource getApplicationResource(
@@ -112,6 +119,8 @@ public class ApplicationsResource {
      *
      * @return a response containing information about all {@link com.netflix.discovery.shared.Applications}
      *         from the {@link AbstractInstanceRegistry}.
+     *
+     *         获取全量注册表信息
      */
     @GET
     public Response getContainers(@PathParam("version") String version,
@@ -157,6 +166,7 @@ public class ApplicationsResource {
                     .header(HEADER_CONTENT_TYPE, returnMediaType)
                     .build();
         } else {
+            //多级缓存数据--获取全量注册表信息
             response = Response.ok(responseCache.get(cacheKey))
                     .build();
         }
@@ -191,6 +201,8 @@ public class ApplicationsResource {
      * @param uriInfo  the {@link java.net.URI} information of the request made.
      * @return response containing the delta information of the
      *         {@link AbstractInstanceRegistry}.
+     *
+     *         获取增量注册表信息
      */
     @Path("delta")
     @GET
@@ -226,6 +238,7 @@ public class ApplicationsResource {
             returnMediaType = MediaType.APPLICATION_XML;
         }
 
+        //缓存key ALL_APPS_DELTA
         Key cacheKey = new Key(Key.EntityType.Application,
                 ResponseCacheImpl.ALL_APPS_DELTA,
                 keyType, CurrentRequestVersion.get(), EurekaAccept.fromString(eurekaAccept), regions

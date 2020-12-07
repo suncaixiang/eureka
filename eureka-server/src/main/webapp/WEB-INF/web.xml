@@ -4,28 +4,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <!-- listener是初始化使用的。负责eureka-server的初始化 -->
   <listener>
     <listener-class>com.netflix.eureka.EurekaBootStrap</listener-class>
   </listener>
 
+  <!-- filter是任何请求都会经过 -->
+  <!-- statusFilter是复制状态相关的过滤器。 -->
   <filter>
     <filter-name>statusFilter</filter-name>
     <filter-class>com.netflix.eureka.StatusFilter</filter-class>
   </filter>
-
+  <!-- requestAuthFilter对请求进行认证处理。 -->
   <filter>
     <filter-name>requestAuthFilter</filter-name>
     <filter-class>com.netflix.eureka.ServerRequestAuthFilter</filter-class>
   </filter>
+  <!-- rateLimitingFilter是对请求进行限流。 -->
   <filter>
     <filter-name>rateLimitingFilter</filter-name>
     <filter-class>com.netflix.eureka.RateLimitingFilter</filter-class>
   </filter>
+  <!-- gzipEncodingEnforcingFilter压缩相关。 -->
   <filter>
     <filter-name>gzipEncodingEnforcingFilter</filter-name>
     <filter-class>com.netflix.eureka.GzipEncodingEnforcingFilter</filter-class>
   </filter>
-
+  <!-- ServletContainer核心filter处理所有请i去。相当于Spring mvc的DispatchServlet。 -->
   <filter>
     <filter-name>jersey</filter-name>
     <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
@@ -49,6 +55,7 @@
     </init-param>
   </filter>
 
+  <!--statusFilter和requestAuthFilter，对所有请求都开放 -->
   <filter-mapping>
     <filter-name>statusFilter</filter-name>
     <url-pattern>/*</url-pattern>
@@ -59,13 +66,14 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- Uncomment this to enable rate limiter filter.
+  <!-- 默认不开启rateLimitingFilter的功能
   <filter-mapping>
     <filter-name>rateLimitingFilter</filter-name>
     <url-pattern>/v2/apps</url-pattern>
     <url-pattern>/v2/apps/*</url-pattern>
   </filter-mapping>
   -->
+  <!--gzipEncodingEnforcingFilter对部分请求都开放 -->
 
   <filter-mapping>
     <filter-name>gzipEncodingEnforcingFilter</filter-name>
@@ -77,7 +85,7 @@
     <filter-name>jersey</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
+  <!--eureka-server启动的欢迎页面。index -->
   <welcome-file-list>
     <welcome-file>jsp/status.jsp</welcome-file>
   </welcome-file-list>

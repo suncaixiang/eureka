@@ -124,6 +124,8 @@ public class ApplicationResource {
      * @param id
      *            the unique identifier of the instance.
      * @return information about a particular instance.
+     *
+     * id===instanceId
      */
     @Path("{id}")
     public InstanceResource getInstanceInfo(@PathParam("id") String id) {
@@ -134,11 +136,14 @@ public class ApplicationResource {
      * Registers information about a particular instance for an
      * {@link com.netflix.discovery.shared.Application}.
      *
+     *
+     *
      * @param info
      *            {@link InstanceInfo} information of the instance.
      * @param isReplication
      *            a header parameter containing information whether this is
      *            replicated from other nodes.
+     *            服务注册请求处理
      */
     @POST
     @Consumes({"application/json", "application/xml"})
@@ -146,6 +151,7 @@ public class ApplicationResource {
                                 @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
         logger.debug("Registering instance {} (replication={})", info.getId(), isReplication);
         // validate that the instanceinfo contains all the necessary required fields
+        //将参数进行判断，是否合法
         if (isBlank(info.getId())) {
             return Response.status(400).entity("Missing instanceId").build();
         } else if (isBlank(info.getHostName())) {
@@ -183,6 +189,7 @@ public class ApplicationResource {
             }
         }
 
+        //使用PeerAwareInstanceRegistry进行服务注册，注册到注册表中去
         registry.register(info, "true".equals(isReplication));
         return Response.status(204).build();  // 204 to be backwards compatible
     }

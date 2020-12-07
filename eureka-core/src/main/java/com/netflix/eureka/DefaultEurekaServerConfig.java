@@ -60,6 +60,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Karthik Ranganathan
  *
+ *
+ *
+ *
  */
 @Singleton
 public class DefaultEurekaServerConfig implements EurekaServerConfig {
@@ -70,6 +73,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
             .getLogger(DefaultEurekaServerConfig.class);
     private static final DynamicPropertyFactory configInstance = com.netflix.config.DynamicPropertyFactory
             .getInstance();
+    //eureka server的配置文件的默认名称eureka-server
     private static final DynamicStringProperty EUREKA_PROPS_FILE = DynamicPropertyFactory
             .getInstance().getStringProperty("eureka.server.props",
                     "eureka-server");
@@ -92,6 +96,14 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
 
     private final DynamicStringProperty myUrl = configInstance.getStringProperty(namespace + "myUrl", null);
 
+    /**
+     * 1.创建了一个DefaultEurekaServerConfig对象。
+     * 2.创建DefaultEurekaServerConfig对象时，执行init方法
+     * 3.将eureka-server.properties中的配置项加载到ConfigurationManager中去
+     * 4.DefaultEurekaServerConfig提供的各种方法获取配置项的值，获取对应的配置属性值时，配置项的名字时在各个方法中硬编码的，
+     * DynamicPropertyFactory中获取配置项，DynamicPropertyFactory是ConfigurationManager中来的。通过双重检查锁获取的单例实例。
+     * 5.DynamicPropertyFactory中获取配置项时，如果没配置，给设置了默认值。全部属性都有默认值。
+     */
     public DefaultEurekaServerConfig() {
         init();
     }
@@ -102,15 +114,19 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     }
 
     private void init() {
+        //获取环境相关属性，默认为TEST
         String env = ConfigurationManager.getConfigInstance().getString(
                 EUREKA_ENVIRONMENT, TEST);
         ConfigurationManager.getConfigInstance().setProperty(
                 ARCHAIUS_DEPLOYMENT_ENVIRONMENT, env);
 
+        //eureka server的配置文件的默认名称eureka-server
         String eurekaPropsFile = EUREKA_PROPS_FILE.get();
         try {
-            // ConfigurationManager
-            // .loadPropertiesFromResources(eurekaPropsFile);
+            //1.将eureka-server和.properties代表配置文件的名称
+            //2.将eureka-server.properties中的配置，加载到一个Properties中
+            //3.加载eureka-server-环境.properties中的配置，覆盖之前老的properties的属性
+            //4.将加载出来的配置项，放到configurationManager中，让其管理
             ConfigurationManager
                     .loadCascadedPropertiesFromResources(eurekaPropsFile);
         } catch (IOException e) {

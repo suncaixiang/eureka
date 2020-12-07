@@ -60,6 +60,7 @@ public class Lease<T> {
      * {@link #DEFAULT_DURATION_IN_SECS}.
      */
     public void renew() {
+        //当前时间戳+90s,TODO这里加上duration=90s是一个bug
         lastUpdateTimestamp = System.currentTimeMillis() + duration;
 
     }
@@ -108,6 +109,9 @@ public class Lease<T> {
      * @param additionalLeaseMs any additional lease time to add to the lease evaluation in ms.
      */
     public boolean isExpired(long additionalLeaseMs) {
+        //判断服务实例是否宕机
+        //根据当前时间和上次变更时间+90s+additionalLeaseMs（补偿时间）
+        //也就是上一次心跳后，再过90*2=180s=3分钟，默认情况下，才会认为服务是过期的、、
         return (evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + duration + additionalLeaseMs));
     }
 

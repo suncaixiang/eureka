@@ -133,6 +133,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
             ServerCodecs serverCodecs,
             EurekaClient eurekaClient
     ) {
+        //调取父类构造函数
         super(serverConfig, clientConfig, serverCodecs);
         this.eurekaClient = eurekaClient;
         this.numberOfReplicationsLastMin = new MeasuredRate(1000 * 60 * 1);
@@ -151,7 +152,9 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
     public void init(PeerEurekaNodes peerEurekaNodes) throws Exception {
         this.numberOfReplicationsLastMin.start();
         this.peerEurekaNodes = peerEurekaNodes;
+        //抓取本地注册表MAP中数据，放入多级缓存中
         initializedResponseCache();
+        //初始化调度任务--更新当前服务实例数量--更新每分钟期望心跳次数
         scheduleRenewalThresholdUpdateTask();
         initRemoteRegionRegistry();
 
@@ -191,6 +194,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
      *
      */
     private void scheduleRenewalThresholdUpdateTask() {
+        //默认15分钟，计算一下当前服务实例数量
         timer.schedule(new TimerTask() {
                            @Override
                            public void run() {
@@ -210,19 +214,24 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         // Copy entire entry from neighboring DS node
         int count = 0;
 
+        //如果没拉取到注册表的重试次数，默认numberRegistrySyncRetries=5
         for (int i = 0; ((i < serverConfig.getRegistrySyncRetries()) && (count == 0)); i++) {
             if (i > 0) {
                 try {
+                    //如果没有拉取到注册表，说明此时eureka client没有从eureka server上拉取到注册表
+                    //默认拉取等待时间registrySyncRetryWaitMs=30s
                     Thread.sleep(serverConfig.getRegistrySyncRetryWaitMs());
                 } catch (InterruptedException e) {
                     logger.warn("Interrupted during registry transfer..");
                     break;
                 }
             }
+            //eurekaClient.getApplications()获取的是eureka client初始化时拉取到的缓存在本地的注册表信息
             Applications apps = eurekaClient.getApplications();
             for (Application app : apps.getRegisteredApplications()) {
                 for (InstanceInfo instance : app.getInstances()) {
                     try {
+                        //服务实例，是否可以在本地注册，可以的话，注册到本地
                         if (isRegisterable(instance)) {
                             register(instance, instance.getLeaseInfo().getDurationInSecs(), true);
                             count++;
@@ -255,6 +264,8 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         }
         logger.info("Changing status to UP");
         applicationInfoManager.setInstanceStatus(InstanceStatus.UP);
+
+        //服务故障检查线程初始化
         super.postInit();
     }
 
@@ -409,6 +420,8 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
             leaseDuration = info.getLeaseInfo().getDurationInSecs();
         }
         super.register(info, leaseDuration, isReplication);
+
+        //将eureka client注册信息请求，同步到eureka server集群中去。isReplication 默认情况下是false
         replicateToPeers(Action.Register, info.getAppName(), info.getId(), info, null, isReplication);
     }
 
@@ -477,12 +490,21 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         }
     }
 
+    /**
+     * eureka自我保护机制
+     *
+     * @return
+     */
     @Override
     public boolean isLeaseExpirationEnabled() {
+        //默认是true
         if (!isSelfPreservationModeEnabled()) {
             // The self preservation mode is disabled, hence allowing the instances to expire.
             return true;
         }
+        //numberOfRenewsPerMinThreshold-->期望一分钟发送心跳次数
+        //getNumOfRenewsInLastMin-->上一分钟实例发送心跳总次数
+        //如果上一分钟实例发送心跳次数>期望发送心跳次数=true
         return numberOfRenewsPerMinThreshold > 0 && getNumOfRenewsInLastMin() > numberOfRenewsPerMinThreshold;
     }
 
@@ -532,6 +554,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
     private void updateRenewalThreshold() {
         try {
             Applications apps = eurekaClient.getApplications();
+            //count是从别的eureka server拉取的服务实例数量
             int count = 0;
             for (Application app : apps.getRegisteredApplications()) {
                 for (InstanceInfo instance : app.getInstances()) {
@@ -540,9 +563,12 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                     }
                 }
             }
+
+
             synchronized (lock) {
                 // Update threshold only if the threshold is greater than the
                 // current expected threshold or if self preservation is disabled.
+                //如果别的eureka server拉取到的服务实例数量和expectedNumberOfClientsSendingRenews*0.85
                 if ((count) > (serverConfig.getRenewalPercentThreshold() * expectedNumberOfClientsSendingRenews)
                         || (!this.isSelfPreservationModeEnabled())) {
                     this.expectedNumberOfClientsSendingRenews = count;
@@ -631,19 +657,24 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                                   InstanceStatus newStatus /* optional */, boolean isReplication) {
         Stopwatch tracer = action.getTimer().start();
         try {
+            //isReplication默认情况下是false
             if (isReplication) {
                 numberOfReplicationsLastMin.increment();
             }
             // If it is a replication already, do not replicate again as this will create a poison replication
+            //isReplication如果是同步到其他eureka server节点的请求，isReplication=true。直接返回，可以保证不向eureka server的其他节点
+            //转发请求
             if (peerEurekaNodes == Collections.EMPTY_LIST || isReplication) {
                 return;
             }
 
+            //遍历除了自己的，其他所有的eureka server，同步注册请求
             for (final PeerEurekaNode node : peerEurekaNodes.getPeerEurekaNodes()) {
                 // If the url represents this host, do not replicate to yourself.
                 if (peerEurekaNodes.isThisMyUrl(node.getServiceUrl())) {
                     continue;
                 }
+                //将注册同步到eureka server集群的节点上。
                 replicateInstanceActionsToPeers(action, appName, id, info, newStatus, node);
             }
         } finally {
@@ -654,6 +685,8 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
     /**
      * Replicates all instance changes to peer eureka nodes except for
      * replication traffic to this node.
+     *
+     * 心跳、取消、注册等操作，同步到eureka server集群的其他节点的处理。
      *
      */
     private void replicateInstanceActionsToPeers(Action action, String appName,

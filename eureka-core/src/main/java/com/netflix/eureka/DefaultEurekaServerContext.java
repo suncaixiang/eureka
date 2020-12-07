@@ -64,8 +64,11 @@ public class DefaultEurekaServerContext implements EurekaServerContext {
     @Override
     public void initialize() {
         logger.info("Initializing ...");
+
+        //将eureka server集群启动，创建一个定时调度，后台线程每隔10分钟，更新eureka server集群的url地址
         peerEurekaNodes.start();
         try {
+            //基于eureka server集群的信息，来初始化注册表。将本地注册表放入多级缓存
             registry.init(peerEurekaNodes);
         } catch (Exception e) {
             throw new RuntimeException(e);

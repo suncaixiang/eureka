@@ -54,6 +54,8 @@ public class MeasuredRate {
                 public void run() {
                     try {
                         // Zero out the current bucket.
+                        //currentBucket是用来上一分钟心跳次数，每分钟清零
+                        //lastBucket是用来统计上一分钟心跳次数总数的
                         lastBucket.set(currentBucket.getAndSet(0));
                     } catch (Throwable e) {
                         logger.error("Cannot reset the Measured Rate", e);

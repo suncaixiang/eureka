@@ -43,6 +43,8 @@ import static org.mockito.Mockito.when;
  * which is essential to verifying content encoding/decoding with different format types (JSON vs XML, compressed vs
  * uncompressed).
  *
+ * 在这个测试会将Eureka注册中心启动，模拟Eureka客户端发送各种请求到注册中心，测试各种公告
+ *
  * @author Tomasz Bak
  */
 public class EurekaClientServerRestIntegrationTest {
@@ -232,15 +234,26 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     private static void startServer() throws Exception {
-        File warFile = findWar();
+//        File warFile = findWar();
+//
+//        server = new Server(8080);
+//
+//        WebAppContext webapp = new WebAppContext();
+//        webapp.setContextPath("/");
+//        webapp.setWar(warFile.getAbsolutePath());
+//        server.setHandler(webapp);
+//
+//        server.start();
+
 
         server = new Server(8080);
 
-        WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath("/");
-        webapp.setWar(warFile.getAbsolutePath());
-        server.setHandler(webapp);
+        WebAppContext webAppContext = new WebAppContext(new File("./eureka-server/src/main/webapp").getAbsolutePath(),"/");
+        webAppContext.setDescriptor(new File("./eureka-server/src/main/webapp/WEB_INF/web.xml").getAbsolutePath());
+        webAppContext.setResourceBase(new File("./eureka-server/src/main/resources").getAbsolutePath());
+        webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
+        server.setHandler(webAppContext);
         server.start();
 
         eurekaServiceUrl = "http://localhost:8080/v2";

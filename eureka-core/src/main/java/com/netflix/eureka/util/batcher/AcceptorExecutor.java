@@ -122,6 +122,7 @@ class AcceptorExecutor<ID, T> {
     }
 
     void process(ID id, T task, long expiryTime) {
+        //放入acceptorQueue队列
         acceptorQueue.add(new TaskHolder<ID, T>(id, task, expiryTime));
         acceptedTasks++;
     }
@@ -186,6 +187,7 @@ class AcceptorExecutor<ID, T> {
             long scheduleTime = 0;
             while (!isShutdown.get()) {
                 try {
+                    //处理acceptorQueue队列的数据，将acceptorQueue队列数据放入processingOrder
                     drainInputQueues();
 
                     int totalItems = processingOrder.size();
@@ -195,6 +197,7 @@ class AcceptorExecutor<ID, T> {
                         scheduleTime = now + trafficShaper.transmissionDelay();
                     }
                     if (scheduleTime <= now) {
+                        //分发队列任务
                         assignBatchWork();
                         assignSingleItemWork();
                     }
@@ -220,6 +223,7 @@ class AcceptorExecutor<ID, T> {
         private void drainInputQueues() throws InterruptedException {
             do {
                 drainReprocessQueue();
+                //放入processingOrder
                 drainAcceptorQueue();
 
                 if (isShutdown.get()) {
@@ -293,6 +297,8 @@ class AcceptorExecutor<ID, T> {
         }
 
         void assignBatchWork() {
+            //将一段时间内的processingOrder数据放入batchWorkQueue
+            //默认每隔500ms将队列的任务打成一个batch，默认最大数量为250个
             if (hasEnoughTasksForNextBatch()) {
                 if (batchWorkRequests.tryAcquire(1)) {
                     long now = System.currentTimeMillis();
@@ -311,6 +317,7 @@ class AcceptorExecutor<ID, T> {
                         batchWorkRequests.release();
                     } else {
                         batchSizeMetric.record(holders.size(), TimeUnit.MILLISECONDS);
+                        //加入队列
                         batchWorkQueue.add(holders);
                     }
                 }
@@ -326,6 +333,7 @@ class AcceptorExecutor<ID, T> {
             }
 
             TaskHolder<ID, T> nextHolder = pendingTasks.get(processingOrder.peek());
+            //当前时间-任务提交的时间
             long delay = System.currentTimeMillis() - nextHolder.getSubmitTimestamp();
             return delay >= maxBatchingDelay;
         }

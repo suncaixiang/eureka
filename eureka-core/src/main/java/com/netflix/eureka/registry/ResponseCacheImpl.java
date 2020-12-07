@@ -129,6 +129,7 @@ public class ResponseCacheImpl implements ResponseCache {
         long responseCacheUpdateIntervalMs = serverConfig.getResponseCacheUpdateIntervalMs();
         this.readWriteCacheMap =
                 CacheBuilder.newBuilder().initialCapacity(serverConfig.getInitialCapacityOfResponseCache())
+                        //自动过期设置时间，默认时间180s
                         .expireAfterWrite(serverConfig.getResponseCacheAutoExpirationInSeconds(), TimeUnit.SECONDS)
                         .removalListener(new RemovalListener<Key, Value>() {
                             @Override
@@ -140,6 +141,7 @@ public class ResponseCacheImpl implements ResponseCache {
                                 }
                             }
                         })
+                        //如果没有读取到，抓取本地注册表信息
                         .build(new CacheLoader<Key, Value>() {
                             @Override
                             public Value load(Key key) throws Exception {
@@ -152,6 +154,7 @@ public class ResponseCacheImpl implements ResponseCache {
                             }
                         });
 
+        //readOnlyCacheMap走的定时器，被动过期。默认是每隔30s执行一个调度的线程任务
         if (shouldUseReadOnlyResponseCache) {
             timer.schedule(getCacheUpdateTask(),
                     new Date(((System.currentTimeMillis() / responseCacheUpdateIntervalMs) * responseCacheUpdateIntervalMs)
@@ -177,6 +180,7 @@ public class ResponseCacheImpl implements ResponseCache {
                                 key.getEntityType(), key.getName(), key.getVersion(), key.getType());
                     }
                     try {
+                        //比对readWriteCacheMap、readOnlyCacheMap。如果不一致，更新readOnlyCacheMap数据
                         CurrentRequestVersion.set(key.getVersion());
                         Value cacheValue = readWriteCacheMap.get(key);
                         Value currentCacheValue = readOnlyCacheMap.get(key);
@@ -215,6 +219,7 @@ public class ResponseCacheImpl implements ResponseCache {
         if (payload == null || payload.getPayload().equals(EMPTY_PAYLOAD)) {
             return null;
         } else {
+
             return payload.getPayload();
         }
     }
@@ -251,6 +256,8 @@ public class ResponseCacheImpl implements ResponseCache {
     public void invalidate(String appName, @Nullable String vipAddress, @Nullable String secureVipAddress) {
         for (Key.KeyType type : Key.KeyType.values()) {
             for (Version v : Version.values()) {
+
+                //将缓存过期
                 invalidate(
                         new Key(Key.EntityType.Application, appName, type, v, EurekaAccept.full),
                         new Key(Key.EntityType.Application, appName, type, v, EurekaAccept.compact),
@@ -279,6 +286,7 @@ public class ResponseCacheImpl implements ResponseCache {
             logger.debug("Invalidating the response cache key : {} {} {} {}, {}",
                     key.getEntityType(), key.getName(), key.getVersion(), key.getType(), key.getEurekaAccept());
 
+            //读写缓存过期，只读缓存，定时任务30s执行一次，会比较自己和读写缓存区别，不一致则更新
             readWriteCacheMap.invalidate(key);
             Collection<Key> keysWithRegions = regionSpecificKeys.get(key);
             if (null != keysWithRegions && !keysWithRegions.isEmpty()) {
@@ -352,11 +360,13 @@ public class ResponseCacheImpl implements ResponseCache {
     Value getValue(final Key key, boolean useReadOnlyCache) {
         Value payload = null;
         try {
+            //先从只读缓存readOnlyCacheMap获取注册表信息
             if (useReadOnlyCache) {
                 final Value currentPayload = readOnlyCacheMap.get(key);
                 if (currentPayload != null) {
                     payload = currentPayload;
                 } else {
+                    //如果readOnlyCacheMap中没有，则从读写缓存readWriteCacheMap中获取，再放入只读缓存readOnlyCacheMap
                     payload = readWriteCacheMap.get(key);
                     readOnlyCacheMap.put(key, payload);
                 }
@@ -421,6 +431,7 @@ public class ResponseCacheImpl implements ResponseCache {
                             payload = getPayLoad(key, registry.getApplicationsFromMultipleRegions(key.getRegions()));
                         } else {
                             tracer = serializeAllAppsTimer.start();
+                            //获取全量注册表信息，直接抓取获取本地注册表信息。
                             payload = getPayLoad(key, registry.getApplications());
                         }
                     } else if (ALL_APPS_DELTA.equals(key.getName())) {
@@ -428,6 +439,8 @@ public class ResponseCacheImpl implements ResponseCache {
                             tracer = serializeDeltaAppsWithRemoteRegionTimer.start();
                             versionDeltaWithRegions.incrementAndGet();
                             versionDeltaWithRegionsLegacy.incrementAndGet();
+
+                            //获取增量注册表信息
                             payload = getPayLoad(key,
                                     registry.getApplicationDeltasFromMultipleRegions(key.getRegions()));
                         } else {

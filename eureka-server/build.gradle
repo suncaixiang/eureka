@@ -1,8 +1,11 @@
 apply plugin: 'war'
 
 dependencies {
+    //依赖eureka-client。因为在集群模式时，eureka-server也会扮演一个client，向其他的server去注册
     compile project(':eureka-client')
+    //eureka-core是扮演了核心的注册中心的而角色，接受服务注册的请求，提供服务发现的功能，保持心跳，摘除实例等等
     compile project(':eureka-core')
+    //jersey框架是可以实现支持restful的一个框架
     compile "com.sun.jersey:jersey-server:$jerseyVersion"
     compile "com.sun.jersey:jersey-servlet:$jerseyVersion"
     compile 'org.slf4j:slf4j-log4j12:1.6.1'
@@ -13,8 +16,10 @@ dependencies {
 
     providedCompile "javax.servlet:servlet-api:$servletVersion"
 
+    //依赖mockito进行单元测试
     testCompile project(':eureka-test-utils')
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    //依赖jetty在测试时启动web服务
     testCompile "org.eclipse.jetty:jetty-server:$jetty_version"
     testCompile "org.eclipse.jetty:jetty-webapp:$jetty_version"
 }
@@ -23,7 +28,7 @@ task copyLibs(type: Copy) {
     into 'testlibs/WEB-INF/libs'
     from configurations.runtime
 }
-
+//找到一些jsp代码。eureka server本质上就是一个web应用
 war {
     from (project(':eureka-resources').file('build/resources/main'))
 }

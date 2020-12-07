@@ -42,10 +42,18 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
         this.config = config;
     }
 
+
+    /**
+     * InstanceInfo 是当前这个服务实例的实例本身的信息，使用了建造者模式，InstanceInfo.builder来构造一个复杂的代表一个服务实例的
+     * InstanceInfo对象。
+     * 从之前的EurekaInstanceConfig中获取各种各样服务实例相关的配置，再构造几个其他的对象，从而构成InstanceInfo对象。
+     * @return
+     */
     @Override
     public synchronized InstanceInfo get() {
         if (instanceInfo == null) {
             // Build the lease information to be passed to the server based on config
+            //
             LeaseInfo.Builder leaseInfoBuilder = LeaseInfo.Builder.newBuilder()
                     .setRenewalIntervalInSecs(config.getLeaseRenewalIntervalInSeconds())
                     .setDurationInSecs(config.getLeaseExpirationDurationInSeconds());
@@ -55,6 +63,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
             }
 
             // Builder the instance information to be registered with eureka server
+            //获取静态内部类Builder的对象。使用构造器模式
             InstanceInfo.Builder builder = InstanceInfo.Builder.newBuilder(vipAddressResolver);
 
             // set the appropriate id for the InstanceInfo, falling back to datacenter Id if applicable, else hostname

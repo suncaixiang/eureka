@@ -86,6 +86,8 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
         String urlPath = "apps/" + info.getAppName();
         Response response = null;
         try {
+            //服务注册的请求，地址类似：http://localhost:8080/v2/apps/ServerA
+            //发送的时post请求，将服务实例信息达成一个json传输，包含了自己的主机，ip。端口
             Builder resourceBuilder = jerseyClient.target(serviceUrl).path(urlPath).request();
             addExtraProperties(resourceBuilder);
             addExtraHeaders(resourceBuilder);
@@ -110,6 +112,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
         String urlPath = "apps/" + appName + '/' + id;
         Response response = null;
         try {
+            //调用eureka server取消注册的接口,delete请求，取消注册
             Builder resourceBuilder = jerseyClient.target(serviceUrl).path(urlPath).request();
             addExtraProperties(resourceBuilder);
             addExtraHeaders(resourceBuilder);
@@ -127,6 +130,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
 
     @Override
     public EurekaHttpResponse<InstanceInfo> sendHeartBeat(String appName, String id, InstanceInfo info, InstanceStatus overriddenStatus) {
+        //服务名称+服务实例ID
         String urlPath = "apps/" + appName + '/' + id;
         Response response = null;
         try {
@@ -141,6 +145,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
             addExtraProperties(requestBuilder);
             addExtraHeaders(requestBuilder);
             requestBuilder.accept(MediaType.APPLICATION_JSON_TYPE);
+            //发送心跳，，，put请求
             response = requestBuilder.put(Entity.entity("{}", MediaType.APPLICATION_JSON_TYPE)); // Jersey2 refuses to handle PUT with no body
             EurekaHttpResponseBuilder<InstanceInfo> eurekaResponseBuilder = anEurekaHttpResponse(response.getStatus(), InstanceInfo.class).headers(headersOf(response));
             if (response.hasEntity()) {
@@ -204,6 +209,11 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
         }
     }
 
+    /**
+     * 获取全量注册表信息
+     * @param regions
+     * @return
+     */
     @Override
     public EurekaHttpResponse<Applications> getApplications(String... regions) {
         return getApplicationsInternal("apps/", regions);
@@ -229,6 +239,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
         String urlPath = "apps/" + appName;
         Response response = null;
         try {
+
             Builder requestBuilder = jerseyClient.target(serviceUrl).path(urlPath).request();
             addExtraProperties(requestBuilder);
             addExtraHeaders(requestBuilder);
@@ -252,6 +263,8 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
     private EurekaHttpResponse<Applications> getApplicationsInternal(String urlPath, String[] regions) {
         Response response = null;
         try {
+
+            //调用接口获取全量注册表信息,走的是get请求 http://localhost:8080/v2/apps/
             WebTarget webTarget = jerseyClient.target(serviceUrl).path(urlPath);
             if (regions != null && regions.length > 0) {
                 webTarget = webTarget.queryParam("regions", StringUtil.join(regions));
