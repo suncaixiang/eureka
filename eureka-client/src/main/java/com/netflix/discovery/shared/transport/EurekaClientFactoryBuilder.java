@@ -42,7 +42,7 @@ public abstract class EurekaClientFactoryBuilder<F, B extends EurekaClientFactor
     protected DecoderWrapper decoderWrapper;
     protected AbstractEurekaIdentity clientIdentity;
     protected HostnameVerifier hostnameVerifier;
-    
+
     public B withClientConfig(EurekaClientConfig clientConfig) {
         withClientAccept(EurekaAccept.fromString(clientConfig.getClientDataAccept()));
         withAllowRedirect(clientConfig.allowRedirects());
@@ -118,7 +118,7 @@ public abstract class EurekaClientFactoryBuilder<F, B extends EurekaClientFactor
         this.sslContext = sslContext;
         return self();
     }
-    
+
     public B withHostnameVerifier(HostnameVerifier hostnameVerifier) {
         this.hostnameVerifier = hostnameVerifier;
         return self();

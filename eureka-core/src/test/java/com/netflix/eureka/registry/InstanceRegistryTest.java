@@ -265,8 +265,8 @@ public class InstanceRegistryTest extends AbstractTester {
         when(testTask.getCurrentTimeNano())
                 .thenReturn(1l)  // less than the period
                 .thenReturn(1l + evictionTaskPeriodNanos)  // exactly 1 period
-                .thenReturn(1l + evictionTaskPeriodNanos*2 + 10000000l)  // 10ms longer than 1 period
-                .thenReturn(1l + evictionTaskPeriodNanos*3 - 1l);  // less than 1 period
+                .thenReturn(1l + evictionTaskPeriodNanos * 2 + 10000000l)  // 10ms longer than 1 period
+                .thenReturn(1l + evictionTaskPeriodNanos * 3 - 1l);  // less than 1 period
 
         assertThat(testTask.getCompensationTimeMs(), is(0l));
         assertThat(testTask.getCompensationTimeMs(), is(0l));

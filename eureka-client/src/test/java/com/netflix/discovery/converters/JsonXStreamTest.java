@@ -43,7 +43,7 @@ public class JsonXStreamTest {
     /**
      * Tests: http://x-stream.github.io/CVE-2017-7957.html
      */
-    @Test(expected=ForbiddenClassException.class, timeout=5000)
+    @Test(expected = ForbiddenClassException.class, timeout = 5000)
     public void testVoidElementUnmarshalling() throws Exception {
         XStream xstream = JsonXStream.getInstance();
         xstream.fromXML("{'void':null}");

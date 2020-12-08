@@ -138,12 +138,12 @@ public class EurekaJacksonCodec {
     static EurekaClientConfig loadConfig() {
         return com.netflix.discovery.DiscoveryManager.getInstance().getEurekaClientConfig();
     }
-    
+
     public EurekaJacksonCodec() {
         this(formatKey(loadConfig(), VERSIONS_DELTA_TEMPLATE), formatKey(loadConfig(), APPS_HASHCODE_TEMPTE));
-        
+
     }
-    
+
     public EurekaJacksonCodec(String versionDeltaKey, String appsHashCodeKey) {
         this.versionDeltaKey = versionDeltaKey;
         this.appHashCodeKey = appsHashCodeKey;
@@ -163,9 +163,9 @@ public class EurekaJacksonCodec {
         this.mapper.registerModule(module);
 
         Map<Class<?>, Supplier<ObjectReader>> readers = new HashMap<>();
-        readers.put(InstanceInfo.class, ()->mapper.reader().forType(InstanceInfo.class).withRootName("instance"));
-        readers.put(Application.class, ()->mapper.reader().forType(Application.class).withRootName("application"));
-        readers.put(Applications.class, ()->mapper.reader().forType(Applications.class).withRootName("applications"));
+        readers.put(InstanceInfo.class, () -> mapper.reader().forType(InstanceInfo.class).withRootName("instance"));
+        readers.put(Application.class, () -> mapper.reader().forType(Application.class).withRootName("application"));
+        readers.put(Applications.class, () -> mapper.reader().forType(Applications.class).withRootName("applications"));
         this.objectReaderByClass = readers;
 
         Map<Class<?>, ObjectWriter> writers = new HashMap<>();
@@ -207,24 +207,22 @@ public class EurekaJacksonCodec {
 
     public <T> T readValue(Class<T> type, InputStream entityStream) throws IOException {
         ObjectReader reader = DeserializerStringCache.init(
-                Optional.ofNullable(objectReaderByClass.get(type)).map(Supplier::get).orElseGet(()->mapper.readerFor(type))
-                );
+                Optional.ofNullable(objectReaderByClass.get(type)).map(Supplier::get).orElseGet(() -> mapper.readerFor(type))
+        );
         try {
             return reader.readValue(entityStream);
-        }
-        finally {
+        } finally {
             DeserializerStringCache.clear(reader, CacheScope.GLOBAL_SCOPE);
         }
     }
 
     public <T> T readValue(Class<T> type, String text) throws IOException {
         ObjectReader reader = DeserializerStringCache.init(
-                Optional.ofNullable(objectReaderByClass.get(type)).map(Supplier::get).orElseGet(()->mapper.readerFor(type))
-                );
+                Optional.ofNullable(objectReaderByClass.get(type)).map(Supplier::get).orElseGet(() -> mapper.readerFor(type))
+        );
         try {
             return reader.readValue(text);
-        }
-        finally {
+        } finally {
             DeserializerStringCache.clear(reader, CacheScope.GLOBAL_SCOPE);
         }
     }
@@ -294,16 +292,18 @@ public class EurekaJacksonCodec {
             LAST_RENEW_TIMESTAMP("lastRenewalTimestamp"),
             REG_TIMESTAMP("registrationTimestamp"),
             RENEW_INTERVAL("renewalIntervalInSecs"),
-            SERVICE_UP_TIMESTAMP("serviceUpTimestamp")
-            ;
+            SERVICE_UP_TIMESTAMP("serviceUpTimestamp");
             private final char[] fieldName;
+
             private LeaseInfoField(String fieldName) {
                 this.fieldName = fieldName.toCharArray();
             }
+
             public char[] getFieldName() {
                 return fieldName;
             }
         }
+
         private static EnumLookup<LeaseInfoField> fieldLookup = new EnumLookup<>(LeaseInfoField.class, LeaseInfoField::getFieldName);
 
         @Override
@@ -314,25 +314,25 @@ public class EurekaJacksonCodec {
                 LeaseInfoField field = fieldLookup.find(jp);
                 jsonToken = jp.nextToken();
                 if (field != null && jsonToken != JsonToken.VALUE_NULL) {
-                    switch(field) {
-                    case DURATION: 
-                        builder.setDurationInSecs(jp.getValueAsInt());
-                        break;
-                    case EVICTION_TIMESTAMP:
-                        builder.setEvictionTimestamp(jp.getValueAsLong());
-                        break;
-                    case LAST_RENEW_TIMESTAMP:
-                        builder.setRenewalTimestamp(jp.getValueAsLong());
-                        break;
-                    case REG_TIMESTAMP:
-                        builder.setRegistrationTimestamp(jp.getValueAsLong());
-                        break;
-                    case RENEW_INTERVAL:
-                        builder.setRenewalIntervalInSecs(jp.getValueAsInt());
-                        break;
-                    case SERVICE_UP_TIMESTAMP: 
-                        builder.setServiceUpTimestamp(jp.getValueAsLong());
-                        break;
+                    switch (field) {
+                        case DURATION:
+                            builder.setDurationInSecs(jp.getValueAsInt());
+                            break;
+                        case EVICTION_TIMESTAMP:
+                            builder.setEvictionTimestamp(jp.getValueAsLong());
+                            break;
+                        case LAST_RENEW_TIMESTAMP:
+                            builder.setRenewalTimestamp(jp.getValueAsLong());
+                            break;
+                        case REG_TIMESTAMP:
+                            builder.setRegistrationTimestamp(jp.getValueAsLong());
+                            break;
+                        case RENEW_INTERVAL:
+                            builder.setRenewalIntervalInSecs(jp.getValueAsInt());
+                            break;
+                        case SERVICE_UP_TIMESTAMP:
+                            builder.setServiceUpTimestamp(jp.getValueAsLong());
+                            break;
                     }
                 }
             }
@@ -420,14 +420,14 @@ public class EurekaJacksonCodec {
             }
         }
     }
-    
+
     public static class InstanceInfoDeserializer extends JsonDeserializer<InstanceInfo> {
         private static char[] BUF_AT_CLASS = "@class".toCharArray();
 
         enum InstanceInfoField {
             HOSTNAME(ELEM_HOST),
             INSTANCE_ID(ELEM_INSTANCE_ID),
-            APP(ELEM_APP),                    
+            APP(ELEM_APP),
             IP(ELEM_IP),
             SID(ELEM_SID),
             ID_ATTR(ELEM_IDENTIFYING_ATTR),// nothing 
@@ -451,25 +451,32 @@ public class EurekaJacksonCodec {
             LASTDIRTYTS(ELEM_LASTDIRTYTS),
             ACTIONTYPE(ELEM_ACTIONTYPE),
             ASGNAME(ELEM_ASGNAME),
-            METADATA(NODE_METADATA)
-            ;
+            METADATA(NODE_METADATA);
             private final char[] elementName;
+
             private InstanceInfoField(String elementName) {
                 this.elementName = elementName.toCharArray();
             }
+
             public char[] getElementName() {
                 return elementName;
             }
+
             public static EnumLookup<InstanceInfoField> lookup = new EnumLookup<>(InstanceInfoField.class, InstanceInfoField::getElementName);
         }
-        
+
         enum PortField {
             PORT("$"), ENABLED("@enabled");
             private final char[] fieldName;
+
             private PortField(String name) {
                 this.fieldName = name.toCharArray();
             }
-            public char[] getFieldName() { return fieldName; }
+
+            public char[] getFieldName() {
+                return fieldName;
+            }
+
             public static EnumLookup<PortField> lookup = new EnumLookup<>(PortField.class, PortField::getFieldName);
         }
 
@@ -478,6 +485,7 @@ public class EurekaJacksonCodec {
         private static EnumLookup<InstanceStatus> statusLookup = new EnumLookup<>(InstanceStatus.class);
         private static EnumLookup<ActionType> actionTypeLookup = new EnumLookup<>(ActionType.class);
         static Set<String> globalCachedMetadata = new HashSet<>();
+
         static {
             globalCachedMetadata.add("route53Type");
             globalCachedMetadata.add("enableRoute53");
@@ -492,7 +500,8 @@ public class EurekaJacksonCodec {
             this.mapper = mapper;
         }
 
-        final static Function<String,String> self = s->s;
+        final static Function<String, String> self = s -> s;
+
         @SuppressWarnings("deprecation")
         @Override
         public InstanceInfo deserialize(JsonParser jp, DeserializationContext context) throws IOException {
@@ -506,149 +515,148 @@ public class EurekaJacksonCodec {
                 InstanceInfoField instanceInfoField = InstanceInfoField.lookup.find(jp);
                 jsonToken = jp.nextToken();
                 if (instanceInfoField != null && jsonToken != JsonToken.VALUE_NULL) {
-                    switch(instanceInfoField) {
-                    case HOSTNAME:
-                        builder.setHostName(intern.apply(jp));
-                        break;
-                    case INSTANCE_ID:
-                        builder.setInstanceId(intern.apply(jp));
-                        break;
-                    case APP:
-                        builder.setAppNameForDeser(
-                                intern.apply(jp, CacheScope.APPLICATION_SCOPE,
-                                ()->{
-                                    try {
-                                        return jp.getText().toUpperCase();
-                                    } catch (IOException e) {
-                                        throw new RuntimeJsonMappingException(e.getMessage());
-                                    }
-                              }));
-                        break;
-                    case IP:
-                        builder.setIPAddr(intern.apply(jp));
-                        break;
-                    case SID:
-                        builder.setSID(intern.apply(jp, CacheScope.GLOBAL_SCOPE));
-                        break;
-                    case ID_ATTR:
-                        // nothing
-                        break;
-                    case STATUS:
-                        builder.setStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
-                        break;
-                    case OVERRIDDEN_STATUS:
-                        builder.setOverriddenStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
-                        break;
-                    case OVERRIDDEN_STATUS_LEGACY:
-                        builder.setOverriddenStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
-                        break;
-                    case PORT:
-                        while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
-                            PortField field = PortField.lookup.find(jp);
-                            switch(field) {
-                            case PORT:
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
-                                builder.setPort(jp.getValueAsInt());
-                                break;
-                            case ENABLED:                            
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
-                                builder.enablePort(PortType.UNSECURE, jp.getValueAsBoolean());
-                                break;
-                            default:
+                    switch (instanceInfoField) {
+                        case HOSTNAME:
+                            builder.setHostName(intern.apply(jp));
+                            break;
+                        case INSTANCE_ID:
+                            builder.setInstanceId(intern.apply(jp));
+                            break;
+                        case APP:
+                            builder.setAppNameForDeser(
+                                    intern.apply(jp, CacheScope.APPLICATION_SCOPE,
+                                            () -> {
+                                                try {
+                                                    return jp.getText().toUpperCase();
+                                                } catch (IOException e) {
+                                                    throw new RuntimeJsonMappingException(e.getMessage());
+                                                }
+                                            }));
+                            break;
+                        case IP:
+                            builder.setIPAddr(intern.apply(jp));
+                            break;
+                        case SID:
+                            builder.setSID(intern.apply(jp, CacheScope.GLOBAL_SCOPE));
+                            break;
+                        case ID_ATTR:
+                            // nothing
+                            break;
+                        case STATUS:
+                            builder.setStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
+                            break;
+                        case OVERRIDDEN_STATUS:
+                            builder.setOverriddenStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
+                            break;
+                        case OVERRIDDEN_STATUS_LEGACY:
+                            builder.setOverriddenStatus(statusLookup.find(jp, InstanceStatus.UNKNOWN));
+                            break;
+                        case PORT:
+                            while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
+                                PortField field = PortField.lookup.find(jp);
+                                switch (field) {
+                                    case PORT:
+                                        if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                        builder.setPort(jp.getValueAsInt());
+                                        break;
+                                    case ENABLED:
+                                        if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                        builder.enablePort(PortType.UNSECURE, jp.getValueAsBoolean());
+                                        break;
+                                    default:
+                                }
                             }
-                        }
-                        break;
-                    case SECURE_PORT:
-                        while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
-                            PortField field = PortField.lookup.find(jp);
-                            switch(field) {
-                            case PORT:
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
-                                builder.setSecurePort(jp.getValueAsInt());
-                                break;
-                            case ENABLED:                            
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
-                                builder.enablePort(PortType.SECURE, jp.getValueAsBoolean());
-                                break;
-                            default:
+                            break;
+                        case SECURE_PORT:
+                            while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
+                                PortField field = PortField.lookup.find(jp);
+                                switch (field) {
+                                    case PORT:
+                                        if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                        builder.setSecurePort(jp.getValueAsInt());
+                                        break;
+                                    case ENABLED:
+                                        if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                        builder.enablePort(PortType.SECURE, jp.getValueAsBoolean());
+                                        break;
+                                    default:
+                                }
                             }
-                        }
-                        break;
-                    case COUNTRY_ID:
-                        builder.setCountryId(jp.getValueAsInt());
-                        break;
-                    case DATACENTER:
-                        builder.setDataCenterInfo(DeserializerStringCache.init(mapper.readerFor(DataCenterInfo.class), context).readValue(jp));
-                        break;
-                    case LEASE:
-                        builder.setLeaseInfo(mapper.readerFor(LeaseInfo.class).readValue(jp));
-                        break;
-                    case HEALTHCHECKURL:
-                        builder.setHealthCheckUrlsForDeser(intern.apply(jp.getText()), null);
-                        break;
-                    case SECHEALTHCHECKURL:
-                        builder.setHealthCheckUrlsForDeser(null, intern.apply(jp.getText()));
-                        break;
-                    case APPGROUPNAME:
-                        builder.setAppGroupNameForDeser(intern.apply(jp, CacheScope.GLOBAL_SCOPE, 
-                                ()->{
-                                    try {
-                                        return jp.getText().toUpperCase();
-                                    } catch (IOException e) {
-                                        throw new RuntimeJsonMappingException(e.getMessage());
-                                    }
-                              }));
-                        break;
-                    case HOMEPAGEURL:
-                        builder.setHomePageUrlForDeser(intern.apply(jp.getText()));
-                        break;
-                    case STATUSPAGEURL:
-                        builder.setStatusPageUrlForDeser(intern.apply(jp.getText()));
-                        break;
-                    case VIPADDRESS:
-                        builder.setVIPAddressDeser(intern.apply(jp));
-                        break;
-                    case SECVIPADDRESS:
-                        builder.setSecureVIPAddressDeser(intern.apply(jp));
-                        break;
-                    case ISCOORDINATINGDISCSERVER:
-                        builder.setIsCoordinatingDiscoveryServer(jp.getValueAsBoolean());
-                        break;
-                    case LASTUPDATEDTS:
-                        builder.setLastUpdatedTimestamp(jp.getValueAsLong());
-                        break;
-                    case LASTDIRTYTS:
-                        builder.setLastDirtyTimestamp(jp.getValueAsLong());
-                        break;
-                    case ACTIONTYPE:
-                        builder.setActionType(actionTypeLookup.find(jp.getTextCharacters(), jp.getTextOffset(), jp.getTextLength()));
-                        break;
-                    case ASGNAME:
-                        builder.setASGName(intern.apply(jp));
-                        break;
-                    case METADATA:
-                        Map<String, String> metadataMap = null;
-                        while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
-                            char[] parserChars = jp.getTextCharacters();
-                            if (parserChars[0] == '@' && EnumLookup.equals(BUF_AT_CLASS, parserChars, jp.getTextOffset(), jp.getTextLength())) {
-                                // skip this
-                                jsonToken = jp.nextToken();
+                            break;
+                        case COUNTRY_ID:
+                            builder.setCountryId(jp.getValueAsInt());
+                            break;
+                        case DATACENTER:
+                            builder.setDataCenterInfo(DeserializerStringCache.init(mapper.readerFor(DataCenterInfo.class), context).readValue(jp));
+                            break;
+                        case LEASE:
+                            builder.setLeaseInfo(mapper.readerFor(LeaseInfo.class).readValue(jp));
+                            break;
+                        case HEALTHCHECKURL:
+                            builder.setHealthCheckUrlsForDeser(intern.apply(jp.getText()), null);
+                            break;
+                        case SECHEALTHCHECKURL:
+                            builder.setHealthCheckUrlsForDeser(null, intern.apply(jp.getText()));
+                            break;
+                        case APPGROUPNAME:
+                            builder.setAppGroupNameForDeser(intern.apply(jp, CacheScope.GLOBAL_SCOPE,
+                                    () -> {
+                                        try {
+                                            return jp.getText().toUpperCase();
+                                        } catch (IOException e) {
+                                            throw new RuntimeJsonMappingException(e.getMessage());
+                                        }
+                                    }));
+                            break;
+                        case HOMEPAGEURL:
+                            builder.setHomePageUrlForDeser(intern.apply(jp.getText()));
+                            break;
+                        case STATUSPAGEURL:
+                            builder.setStatusPageUrlForDeser(intern.apply(jp.getText()));
+                            break;
+                        case VIPADDRESS:
+                            builder.setVIPAddressDeser(intern.apply(jp));
+                            break;
+                        case SECVIPADDRESS:
+                            builder.setSecureVIPAddressDeser(intern.apply(jp));
+                            break;
+                        case ISCOORDINATINGDISCSERVER:
+                            builder.setIsCoordinatingDiscoveryServer(jp.getValueAsBoolean());
+                            break;
+                        case LASTUPDATEDTS:
+                            builder.setLastUpdatedTimestamp(jp.getValueAsLong());
+                            break;
+                        case LASTDIRTYTS:
+                            builder.setLastDirtyTimestamp(jp.getValueAsLong());
+                            break;
+                        case ACTIONTYPE:
+                            builder.setActionType(actionTypeLookup.find(jp.getTextCharacters(), jp.getTextOffset(), jp.getTextLength()));
+                            break;
+                        case ASGNAME:
+                            builder.setASGName(intern.apply(jp));
+                            break;
+                        case METADATA:
+                            Map<String, String> metadataMap = null;
+                            while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
+                                char[] parserChars = jp.getTextCharacters();
+                                if (parserChars[0] == '@' && EnumLookup.equals(BUF_AT_CLASS, parserChars, jp.getTextOffset(), jp.getTextLength())) {
+                                    // skip this
+                                    jsonToken = jp.nextToken();
+                                } else { // For backwards compatibility
+                                    String key = intern.apply(jp, CacheScope.GLOBAL_SCOPE);
+                                    jsonToken = jp.nextToken();
+                                    String value = intern.apply(jp, CacheScope.APPLICATION_SCOPE);
+                                    metadataMap = Optional.ofNullable(metadataMap).orElseGet(METADATA_MAP_SUPPLIER);
+                                    metadataMap.put(key, value);
+                                }
                             }
-                            else { // For backwards compatibility
-                                String key = intern.apply(jp, CacheScope.GLOBAL_SCOPE);
-                                jsonToken = jp.nextToken();
-                                String value = intern.apply(jp, CacheScope.APPLICATION_SCOPE );
-                                metadataMap = Optional.ofNullable(metadataMap).orElseGet(METADATA_MAP_SUPPLIER);
-                                metadataMap.put(key, value);
-                            }
-                        };   
-                        builder.setMetadata(metadataMap == null ? Collections.emptyMap() : Collections.synchronizedMap(metadataMap));
-                        break;
-                    default:                    
-                        autoUnmarshalEligible(jp.getCurrentName(), jp.getValueAsString(), builder.getRawInstance());
+                            ;
+                            builder.setMetadata(metadataMap == null ? Collections.emptyMap() : Collections.synchronizedMap(metadataMap));
+                            break;
+                        default:
+                            autoUnmarshalEligible(jp.getCurrentName(), jp.getValueAsString(), builder.getRawInstance());
                     }
-                }
-                else {
+                } else {
                     autoUnmarshalEligible(jp.getCurrentName(), jp.getValueAsString(), builder.getRawInstance());
                 }
             }
@@ -659,7 +667,7 @@ public class EurekaJacksonCodec {
             if (value == null || o == null) return; // early out
             Class<?> c = o.getClass();
             String cacheKey = c.getName() + ":" + fieldName;
-            BiConsumer<Object, String> action = autoUnmarshalActions.computeIfAbsent(cacheKey, k-> {
+            BiConsumer<Object, String> action = autoUnmarshalActions.computeIfAbsent(cacheKey, k -> {
                 try {
                     Field f = null;
                     try {
@@ -668,11 +676,13 @@ public class EurekaJacksonCodec {
                         // TODO XStream version increments metrics counter here
                     }
                     if (f == null) {
-                        return (t,v)->{};
+                        return (t, v) -> {
+                        };
                     }
                     Annotation annotation = f.getAnnotation(Auto.class);
                     if (annotation == null) {
-                        return (t,v)->{};
+                        return (t, v) -> {
+                        };
                     }
                     f.setAccessible(true);
 
@@ -680,10 +690,16 @@ public class EurekaJacksonCodec {
                     Class<?> returnClass = setterField.getType();
                     if (!String.class.equals(returnClass)) {
                         Method method = returnClass.getDeclaredMethod("valueOf", java.lang.String.class);
-                        return (t, v) -> tryCatchLog(()->{ setterField.set(t, method.invoke(returnClass, v)); return null; });
+                        return (t, v) -> tryCatchLog(() -> {
+                            setterField.set(t, method.invoke(returnClass, v));
+                            return null;
+                        });
                     } else {
-                        return (t, v) -> tryCatchLog(()->{ setterField.set(t, v); return null; });
-                    }  
+                        return (t, v) -> tryCatchLog(() -> {
+                            setterField.set(t, v);
+                            return null;
+                        });
+                    }
                 } catch (Exception ex) {
                     logger.error("Error in unmarshalling the object:", ex);
                     return null;
@@ -694,7 +710,7 @@ public class EurekaJacksonCodec {
     }
 
     private static void tryCatchLog(Callable<Void> callable) {
-        try {    
+        try {
             callable.call();
         } catch (Exception ex) {
             logger.error("Error in unmarshalling the object:", ex);
@@ -715,12 +731,17 @@ public class EurekaJacksonCodec {
         enum ApplicationField {
             NAME(ELEM_NAME), INSTANCE(ELEM_INSTANCE);
             private final char[] fieldName;
+
             private ApplicationField(String name) {
                 this.fieldName = name.toCharArray();
             }
-            public char[] getFieldName() { return fieldName; }
+
+            public char[] getFieldName() {
+                return fieldName;
+            }
+
             public static EnumLookup<ApplicationField> lookup = new EnumLookup<>(ApplicationField.class, ApplicationField::getFieldName);
-            
+
         }
 
         private final ObjectMapper mapper;
@@ -728,7 +749,7 @@ public class EurekaJacksonCodec {
         public ApplicationDeserializer(ObjectMapper mapper) {
             this.mapper = mapper;
         }
-        
+
         @Override
         public Application deserialize(JsonParser jp, DeserializationContext context) throws IOException {
             if (Thread.currentThread().isInterrupted()) {
@@ -737,33 +758,31 @@ public class EurekaJacksonCodec {
             Application application = new Application();
             JsonToken jsonToken;
             try {
-                while((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT){
-                    if(JsonToken.FIELD_NAME == jsonToken){
+                while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
+                    if (JsonToken.FIELD_NAME == jsonToken) {
                         ApplicationField field = ApplicationField.lookup.find(jp);
                         jsonToken = jp.nextToken();
                         if (field != null) {
-                            switch(field) {
-                            case NAME:
-                                application.setName(jp.getText());
-                                break;
-                            case INSTANCE:
-                                ObjectReader instanceInfoReader = DeserializerStringCache.init(mapper.readerFor(InstanceInfo.class), context);
-                                if (jsonToken == JsonToken.START_ARRAY) {
-                                    // messages is array, loop until token equal to "]"
-                                    while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            switch (field) {
+                                case NAME:
+                                    application.setName(jp.getText());
+                                    break;
+                                case INSTANCE:
+                                    ObjectReader instanceInfoReader = DeserializerStringCache.init(mapper.readerFor(InstanceInfo.class), context);
+                                    if (jsonToken == JsonToken.START_ARRAY) {
+                                        // messages is array, loop until token equal to "]"
+                                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                                            application.addInstance(instanceInfoReader.readValue(jp));
+                                        }
+                                    } else if (jsonToken == JsonToken.START_OBJECT) {
                                         application.addInstance(instanceInfoReader.readValue(jp));
                                     }
-                                }
-                                else if (jsonToken == JsonToken.START_OBJECT) {
-                                    application.addInstance(instanceInfoReader.readValue(jp));
-                                }
-                                break;
+                                    break;
                             }
-                         }
+                        }
                     }
                 }
-            }
-            finally {
+            } finally {
 //                DeserializerStringCache.clear(context, CacheScope.APPLICATION_SCOPE);
             }
             return application;
@@ -806,25 +825,23 @@ public class EurekaJacksonCodec {
             }
             Applications apps = new Applications();
             JsonToken jsonToken;
-            while((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT){
-                
-                if(JsonToken.FIELD_NAME == jsonToken){
+            while ((jsonToken = jp.nextToken()) != JsonToken.END_OBJECT) {
+
+                if (JsonToken.FIELD_NAME == jsonToken) {
                     String fieldName = jp.getCurrentName();
                     jsonToken = jp.nextToken();
 
-                    if(versionDeltaKey.equals(fieldName)){
+                    if (versionDeltaKey.equals(fieldName)) {
                         apps.setVersion(jp.getValueAsLong());
-                    } else if (appHashCodeKey.equals(fieldName)){
+                    } else if (appHashCodeKey.equals(fieldName)) {
                         apps.setAppsHashCode(jp.getValueAsString());
-                    }
-                    else if (NODE_APP.equals(fieldName)) {
+                    } else if (NODE_APP.equals(fieldName)) {
                         ObjectReader applicationReader = DeserializerStringCache.init(mapper.readerFor(Application.class), context);
                         if (jsonToken == JsonToken.START_ARRAY) {
                             while (jp.nextToken() != JsonToken.END_ARRAY) {
                                 apps.addApplication(applicationReader.readValue(jp));
-                            }                            
-                        }
-                        else if (jsonToken == JsonToken.START_OBJECT) {
+                            }
+                        } else if (jsonToken == JsonToken.START_OBJECT) {
                             apps.addApplication(applicationReader.readValue(jp));
                         }
                     }

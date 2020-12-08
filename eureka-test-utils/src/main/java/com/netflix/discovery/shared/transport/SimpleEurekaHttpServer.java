@@ -94,7 +94,7 @@ public class SimpleEurekaHttpServer {
         return new HttpHandler() {
             @Override
             public void handle(HttpExchange httpExchange) throws IOException {
-                if(eventListener != null) {
+                if (eventListener != null) {
                     eventListener.onHttpRequest(mapToEurekaHttpRequest(httpExchange));
                 }
                 try {
@@ -245,7 +245,7 @@ public class SimpleEurekaHttpServer {
         Headers exchangeHeaders = httpExchange.getRequestHeaders();
         Map<String, String> headers = new HashMap<>();
 
-        for(String key: exchangeHeaders.keySet()) {
+        for (String key : exchangeHeaders.keySet()) {
             headers.put(key, exchangeHeaders.getFirst(key));
         }
         return new EurekaHttpRequest(httpExchange.getRequestMethod(), httpExchange.getRequestURI(), headers);

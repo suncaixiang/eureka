@@ -60,7 +60,7 @@ public class CloudInstanceConfigTest {
         return new CloudInstanceConfig(info) {
             @Override
             public String[] getDefaultAddressResolutionOrder() {
-                return new String[] {
+                return new String[]{
                         publicHostname.name(),
                         localIpv4.name(),
                         ipv6.name()
@@ -73,7 +73,9 @@ public class CloudInstanceConfigTest {
             }
 
             @Override
-            public boolean shouldBroadcastPublicIpv4Addr() { return true; }
+            public boolean shouldBroadcastPublicIpv4Addr() {
+                return true;
+            }
         };
     }
 }

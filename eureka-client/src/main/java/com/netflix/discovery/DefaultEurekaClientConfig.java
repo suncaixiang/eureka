@@ -34,7 +34,6 @@ import com.netflix.discovery.shared.transport.EurekaTransportConfig;
 import static com.netflix.discovery.PropertyBasedClientConfigConstants.*;
 
 /**
- *
  * A default implementation of eureka client configuration as required by
  * {@link EurekaClientConfig}.
  *
@@ -54,7 +53,6 @@ import static com.netflix.discovery.PropertyBasedClientConfigConstants.*;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 @Singleton
 @ProvidedBy(DefaultEurekaClientConfigProvider.class)
@@ -301,7 +299,7 @@ public class DefaultEurekaClientConfig implements EurekaClientConfig {
     @Override
     public boolean shouldUnregisterOnShutdown() {
         return configInstance.getBooleanProperty(
-              namespace + SHOULD_UNREGISTER_ON_SHUTDOWN_KEY, true).get();
+                namespace + SHOULD_UNREGISTER_ON_SHUTDOWN_KEY, true).get();
     }
 
     /*
@@ -321,10 +319,10 @@ public class DefaultEurekaClientConfig implements EurekaClientConfig {
     }
 
     /*
-         * (non-Javadoc)
-         *
-         * @see com.netflix.discovery.EurekaClientConfig#shouldLogDeltaDiff()
-         */
+     * (non-Javadoc)
+     *
+     * @see com.netflix.discovery.EurekaClientConfig#shouldLogDeltaDiff()
+     */
     @Override
     public boolean shouldLogDeltaDiff() {
         return configInstance.getBooleanProperty(

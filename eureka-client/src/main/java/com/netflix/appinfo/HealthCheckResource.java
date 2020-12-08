@@ -26,10 +26,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A basic <em>healthcheck</em> jersey resource.
- *
+ * <p>
  * This can be used a {@link HealthCheckCallback} resource if required.
- * @author Karthik Ranganathan, Greg Kim
  *
+ * @author Karthik Ranganathan, Greg Kim
  */
 @Path("/healthcheck")
 public class HealthCheckResource {

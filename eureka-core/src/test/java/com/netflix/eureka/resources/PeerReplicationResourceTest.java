@@ -91,7 +91,7 @@ public class PeerReplicationResourceTest {
                 Long.toString(replicationInstance.getLastDirtyTimestamp())
         );
     }
-    
+
     @Test
     public void testConflictResponseReturnsTheInstanceInfoInTheResponseEntity() throws Exception {
         when(instanceResource.renewLease(anyString(), anyString(), anyString(), anyString())).thenReturn(Response.status(Status.CONFLICT).entity(instanceInfo).build());
@@ -136,7 +136,7 @@ public class PeerReplicationResourceTest {
     private static void assertStatusOkReply(Response httpResponse) {
         assertStatus(httpResponse, 200);
     }
-    
+
     private static void assertStatusIsConflict(Response httpResponse) {
         assertStatus(httpResponse, 409);
     }

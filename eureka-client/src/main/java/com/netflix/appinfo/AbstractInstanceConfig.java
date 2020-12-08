@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
  * their instance with eureka server.
  *
  * @author Karthik Ranganathan
- *
  */
 public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
     private static final Logger logger = LoggerFactory.getLogger(AbstractInstanceConfig.class);
@@ -41,7 +40,7 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
      */
     @Deprecated
     public static final String DEFAULT_NAMESPACE = CommonConstants.DEFAULT_CONFIG_NAMESPACE;
-    
+
     private static final int LEASE_EXPIRATION_DURATION_SECONDS = 90;
     private static final int LEASE_RENEWAL_INTERVAL_SECONDS = 30;
     private static final boolean SECURE_PORT_ENABLED = false;
@@ -211,7 +210,9 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
         return hostInfo.first();
     }
 
-    public boolean shouldBroadcastPublicIpv4Addr () { return false; }
+    public boolean shouldBroadcastPublicIpv4Addr() {
+        return false;
+    }
 
     private static Pair<String, String> getHostInfo() {
         Pair<String, String> pair;

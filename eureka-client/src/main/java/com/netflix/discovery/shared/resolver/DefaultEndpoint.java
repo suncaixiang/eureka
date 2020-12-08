@@ -56,10 +56,10 @@ public class DefaultEndpoint implements EurekaEndpoint {
                 .append(isSecure ? "https" : "http")
                 .append("://")
                 .append(networkAddress);
-		if (port >= 0) {
-			sb.append(':')
-				.append(port);
-		}
+        if (port >= 0) {
+            sb.append(':')
+                    .append(port);
+        }
         if (relativeUri != null) {
             if (!relativeUri.startsWith("/")) {
                 sb.append('/');
@@ -121,7 +121,8 @@ public class DefaultEndpoint implements EurekaEndpoint {
 
         if (isSecure != that.isSecure) return false;
         if (port != that.port) return false;
-        if (networkAddress != null ? !networkAddress.equals(that.networkAddress) : that.networkAddress != null) return false;
+        if (networkAddress != null ? !networkAddress.equals(that.networkAddress) : that.networkAddress != null)
+            return false;
         if (relativeUri != null ? !relativeUri.equals(that.relativeUri) : that.relativeUri != null) return false;
         if (serviceUrl != null ? !serviceUrl.equals(that.serviceUrl) : that.serviceUrl != null) return false;
 

@@ -80,7 +80,7 @@ public class EurekaHttpResolverTest {
 
     @Test
     public void testErrorResponseFromRemoteServer() {
-        when(httpClient.getVip(vipAddress)).thenReturn(EurekaHttpResponse.anEurekaHttpResponse(500, (Applications)null).build());
+        when(httpClient.getVip(vipAddress)).thenReturn(EurekaHttpResponse.anEurekaHttpResponse(500, (Applications) null).build());
 
         List<AwsEndpoint> endpoints = resolver.getClusterEndpoints();
         assertThat(endpoints.isEmpty(), is(true));

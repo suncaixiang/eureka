@@ -45,7 +45,7 @@ public class ApplicationInfoManagerTest {
         String newPublicHostname = "newValue";
         assertThat(instanceInfo.getHostName(), is(not(newPublicHostname)));
 
-        ((AmazonInfo)config.getDataCenterInfo()).getMetadata().put(publicHostname.getName(), newPublicHostname);
+        ((AmazonInfo) config.getDataCenterInfo()).getMetadata().put(publicHostname.getName(), newPublicHostname);
         applicationInfoManager.refreshDataCenterInfoIfRequired();
 
         assertThat(instanceInfo.getHostName(), is(newPublicHostname));
@@ -72,8 +72,8 @@ public class ApplicationInfoManagerTest {
 
         applicationInfoManager.refreshDataCenterInfoIfRequired();
 
-        assertThat(((AmazonInfo)instanceInfo.getDataCenterInfo()).getMetadata().get(AmazonInfo.MetaDataKey.spotTerminationTime.getName()), is(terminationTime));
-        assertThat(((AmazonInfo)instanceInfo.getDataCenterInfo()).getMetadata().get(AmazonInfo.MetaDataKey.spotInstanceAction.getName()), is(spotInstanceAction));
+        assertThat(((AmazonInfo) instanceInfo.getDataCenterInfo()).getMetadata().get(AmazonInfo.MetaDataKey.spotTerminationTime.getName()), is(terminationTime));
+        assertThat(((AmazonInfo) instanceInfo.getDataCenterInfo()).getMetadata().get(AmazonInfo.MetaDataKey.spotInstanceAction.getName()), is(spotInstanceAction));
     }
 
     @Test

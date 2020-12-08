@@ -45,9 +45,9 @@ public class DiagnosticClient {
                 applications = merged;
             } else {
                 System.out.println("ERROR: hash codes do not match (" + delta.getAppsHashCode() + "(delta) != "
-                                + merged.getAppsHashCode() + " (merged) != "
-                                + applications.getAppsHashCode() + "(old apps)" +
-                                "(delta count=" + countInstances(delta) + ')'
+                        + merged.getAppsHashCode() + " (merged) != "
+                        + applications.getAppsHashCode() + "(old apps)" +
+                        "(delta count=" + countInstances(delta) + ')'
                 );
                 applications = client.getApplications().getEntity();
             }

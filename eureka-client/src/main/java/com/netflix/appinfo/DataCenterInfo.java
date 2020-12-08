@@ -26,7 +26,6 @@ import com.netflix.discovery.converters.jackson.DataCenterTypeInfoResolver;
  * A simple interface for indicating which <em>datacenter</em> a particular instance belongs.
  *
  * @author Karthik Ranganathan
- *
  */
 @JsonRootName("dataCenterInfo")
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@class")

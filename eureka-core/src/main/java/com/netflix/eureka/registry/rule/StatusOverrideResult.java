@@ -5,7 +5,7 @@ import com.netflix.eureka.registry.rule.InstanceStatusOverrideRule;
 
 /**
  * Container for a result computed by an {@link InstanceStatusOverrideRule}.
- *
+ * <p>
  * Created by Nikos Michalakis on 7/13/16.
  */
 public class StatusOverrideResult {

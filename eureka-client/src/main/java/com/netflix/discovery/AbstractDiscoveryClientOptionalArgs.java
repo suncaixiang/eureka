@@ -31,9 +31,9 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     Collection<T> additionalFilters;
 
     EurekaJerseyClient eurekaJerseyClient;
-    
+
     TransportClientFactory transportClientFactory;
-    
+
     TransportClientFactories transportClientFactories;
 
     private Set<EurekaEventListener> eventListeners;
@@ -49,13 +49,13 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
         }
         eventListeners.addAll(listeners);
     }
-    
+
     @Inject(optional = true)
     public void setEventBus(final EventBus eventBus) {
         if (eventListeners == null) {
             eventListeners = new HashSet<>();
         }
-        
+
         eventListeners.add(new EurekaEventListener() {
             @Override
             public void onEvent(EurekaEvent event) {
@@ -64,12 +64,12 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
         });
     }
 
-    @Inject(optional = true) 
+    @Inject(optional = true)
     public void setHealthCheckCallbackProvider(Provider<HealthCheckCallback> healthCheckCallbackProvider) {
         this.healthCheckCallbackProvider = healthCheckCallbackProvider;
     }
 
-    @Inject(optional = true) 
+    @Inject(optional = true)
     public void setHealthCheckHandlerProvider(Provider<HealthCheckHandler> healthCheckHandlerProvider) {
         this.healthCheckHandlerProvider = healthCheckHandlerProvider;
     }
@@ -80,20 +80,20 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     }
 
 
-    @Inject(optional = true) 
+    @Inject(optional = true)
     public void setAdditionalFilters(Collection<T> additionalFilters) {
         this.additionalFilters = additionalFilters;
     }
 
-    @Inject(optional = true) 
+    @Inject(optional = true)
     public void setEurekaJerseyClient(EurekaJerseyClient eurekaJerseyClient) {
         this.eurekaJerseyClient = eurekaJerseyClient;
     }
-    
+
     Set<EurekaEventListener> getEventListeners() {
         return eventListeners == null ? Collections.<EurekaEventListener>emptySet() : eventListeners;
     }
-    
+
     public TransportClientFactories getTransportClientFactories() {
         return transportClientFactories;
     }
@@ -102,7 +102,7 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     public void setTransportClientFactories(TransportClientFactories transportClientFactories) {
         this.transportClientFactories = transportClientFactories;
     }
-    
+
     public Optional<SSLContext> getSSLContext() {
         return sslContext;
     }
@@ -111,7 +111,7 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     public void setSSLContext(SSLContext sslContext) {
         this.sslContext = Optional.of(sslContext);
     }
-    
+
     public Optional<HostnameVerifier> getHostnameVerifier() {
         return hostnameVerifier;
     }

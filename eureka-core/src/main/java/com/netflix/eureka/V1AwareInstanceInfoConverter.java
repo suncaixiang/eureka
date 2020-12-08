@@ -26,7 +26,6 @@ import com.netflix.eureka.resources.CurrentRequestVersion;
  * {@link InstanceStatus#OUT_OF_SERVICE}.
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 public class V1AwareInstanceInfoConverter extends InstanceInfoConverter {
 

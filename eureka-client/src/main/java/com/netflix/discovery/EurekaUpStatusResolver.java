@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * and emits status changes to @UpStatus Observable<Boolean>.
  *
  * @author elandau
- *
  */
 @Singleton
 public class EurekaUpStatusResolver {
@@ -30,7 +29,7 @@ public class EurekaUpStatusResolver {
     private final AtomicLong counter = new AtomicLong();
 
     /**
-     * @param client the eurekaClient
+     * @param client   the eurekaClient
      * @param eventBus the eventBus to publish eureka status change events
      */
     @Inject

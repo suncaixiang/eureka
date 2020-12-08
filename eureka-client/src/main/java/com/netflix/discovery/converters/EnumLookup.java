@@ -69,7 +69,7 @@ public class EnumLookup<T extends Enum<T>> {
 
     public T find(char[] a, int offset, int length, T defaultValue) {
         if (length < this.minLength || length > this.maxLength) return defaultValue;
-        
+
         int hash = hashCode(a, offset, length);
         int index = Arrays.binarySearch(sortedHashes, hash);
         if (index >= 0) {

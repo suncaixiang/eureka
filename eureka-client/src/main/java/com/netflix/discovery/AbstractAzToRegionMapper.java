@@ -89,6 +89,7 @@ public abstract class AbstractAzToRegionMapper implements AzToRegionMapper {
 
     /**
      * Returns all the zones in the provided region.
+     *
      * @param region the region whose zones you want
      * @return a set of zones
      */
@@ -111,6 +112,7 @@ public abstract class AbstractAzToRegionMapper implements AzToRegionMapper {
 
     /**
      * Tries to determine what region we're in, based on the provided availability zone.
+     *
      * @param availabilityZone the availability zone to inspect
      * @return the region, if available; null otherwise
      */

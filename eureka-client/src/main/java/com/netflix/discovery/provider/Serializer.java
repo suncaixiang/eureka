@@ -22,7 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
  * An annotation that helps in specifying the custom serializer/de-serialization
  * implementation for jersey.
  *
@@ -34,7 +33,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})

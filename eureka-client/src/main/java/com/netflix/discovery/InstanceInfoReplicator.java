@@ -20,10 +20,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * - update tasks can be scheduled on-demand via onDemandUpdate()
  * - task processing is rate limited by burstSize
  * - a new update task is always scheduled automatically after an earlier update task. However if an on-demand task
- *   is started, the scheduled automatic update task is discarded (and a new one will be scheduled after the new
- *   on-demand update).
+ * is started, the scheduled automatic update task is discarded (and a new one will be scheduled after the new
+ * on-demand update).
  *
- *   @author dliu
+ * @author dliu
  */
 class InstanceInfoReplicator implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(InstanceInfoReplicator.class);
@@ -60,7 +60,11 @@ class InstanceInfoReplicator implements Runnable {
         logger.info("InstanceInfoReplicator onDemand update allowed rate per min is {}", allowedRatePerMinute);
     }
 
-    //放入与1个线程池，延迟40s去执行
+    /**
+     * 放入与1个线程池，延迟40s去执行
+     *
+     * @param initialDelayMs
+     */
     public void start(int initialDelayMs) {
         if (started.compareAndSet(false, true)) {
             instanceInfo.setIsDirty();  // for initial register
@@ -92,13 +96,13 @@ class InstanceInfoReplicator implements Runnable {
                     @Override
                     public void run() {
                         logger.debug("Executing on-demand update of local InstanceInfo");
-    
+
                         Future latestPeriodic = scheduledPeriodicRef.get();
                         if (latestPeriodic != null && !latestPeriodic.isDone()) {
                             logger.debug("Canceling the latest scheduled update, it will be rescheduled at the end of on demand update");
                             latestPeriodic.cancel(false);
                         }
-    
+
                         InstanceInfoReplicator.this.run();
                     }
                 });

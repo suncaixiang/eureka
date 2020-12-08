@@ -26,7 +26,6 @@ import org.apache.http.params.HttpParams;
  * counter for creating new entries, and counter for every connection request.
  *
  * @author awang
- *
  */
 public class NamedConnectionPool extends ConnPoolByRoute {
 
@@ -167,7 +166,7 @@ public class NamedConnectionPool extends ConnPoolByRoute {
     @Override
     public void shutdown() {
         super.shutdown();
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
     }

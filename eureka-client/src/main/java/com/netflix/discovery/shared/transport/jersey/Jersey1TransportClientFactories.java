@@ -19,7 +19,7 @@ import com.sun.jersey.client.apache4.ApacheHttpClient4;
 public class Jersey1TransportClientFactories implements TransportClientFactories<ClientFilter> {
     @Deprecated
     public TransportClientFactory newTransportClientFactory(final Collection<ClientFilter> additionalFilters,
-                                                                   final EurekaJerseyClient providedJerseyClient) {
+                                                            final EurekaJerseyClient providedJerseyClient) {
         ApacheHttpClient4 apacheHttpClient = providedJerseyClient.getClient();
         if (additionalFilters != null) {
             for (ClientFilter filter : additionalFilters) {
@@ -47,15 +47,15 @@ public class Jersey1TransportClientFactories implements TransportClientFactories
     }
 
     public TransportClientFactory newTransportClientFactory(final EurekaClientConfig clientConfig,
-                                                                   final Collection<ClientFilter> additionalFilters,
-                                                                   final InstanceInfo myInstanceInfo) {
+                                                            final Collection<ClientFilter> additionalFilters,
+                                                            final InstanceInfo myInstanceInfo) {
         return newTransportClientFactory(clientConfig, additionalFilters, myInstanceInfo, Optional.empty(), Optional.empty());
     }
-    
+
     @Override
     public TransportClientFactory newTransportClientFactory(EurekaClientConfig clientConfig,
-            Collection<ClientFilter> additionalFilters, InstanceInfo myInstanceInfo, Optional<SSLContext> sslContext,
-            Optional<HostnameVerifier> hostnameVerifier) {
+                                                            Collection<ClientFilter> additionalFilters, InstanceInfo myInstanceInfo, Optional<SSLContext> sslContext,
+                                                            Optional<HostnameVerifier> hostnameVerifier) {
         final TransportClientFactory jerseyFactory = JerseyEurekaHttpClientFactory.create(
                 clientConfig,
                 additionalFilters,
@@ -64,7 +64,7 @@ public class Jersey1TransportClientFactories implements TransportClientFactories
                 sslContext,
                 hostnameVerifier
         );
-        
+
         final TransportClientFactory metricsFactory = MetricsCollectingEurekaHttpClient.createFactory(jerseyFactory);
 
         return new TransportClientFactory() {

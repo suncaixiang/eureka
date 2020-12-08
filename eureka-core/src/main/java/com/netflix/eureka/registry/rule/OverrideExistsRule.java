@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * This rule checks to see if we have overrides for an instance and if we do then we return those.
- *
+ * <p>
  * Created by Nikos Michalakis on 7/13/16.
  */
 public class OverrideExistsRule implements InstanceStatusOverrideRule {

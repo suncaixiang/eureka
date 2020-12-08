@@ -31,7 +31,7 @@ public final class AmazonInfoUtils {
                 br.close();
             }
         } else {
-           return metaDataKey.read(uc.getInputStream());
+            return metaDataKey.read(uc.getInputStream());
         }
 
         return null;

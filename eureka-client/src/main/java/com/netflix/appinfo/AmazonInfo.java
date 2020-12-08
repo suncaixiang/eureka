@@ -46,7 +46,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 @JsonDeserialize(using = StringInterningAmazonInfoBuilder.class)
 public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
@@ -258,12 +257,12 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
             @JsonProperty("metadata") HashMap<String, String> metadata) {
         this.metadata = metadata;
     }
-    
+
     public AmazonInfo(
             @JsonProperty("name") String name,
             @JsonProperty("metadata") Map<String, String> metadata) {
         this.metadata = metadata;
-    }    
+    }
 
     @Override
     public Name getName() {
@@ -283,8 +282,7 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
     /**
      * Set AWS metadata.
      *
-     * @param metadataMap
-     *            the map containing AWS metadata.
+     * @param metadataMap the map containing AWS metadata.
      */
     public void setMetadata(Map<String, String> metadataMap) {
         this.metadata = metadataMap;
@@ -293,8 +291,7 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
     /**
      * Gets the AWS metadata specified in {@link MetaDataKey}.
      *
-     * @param key
-     *            the metadata key.
+     * @param key the metadata key.
      * @return String returning the value.
      */
     public String get(MetaDataKey key) {

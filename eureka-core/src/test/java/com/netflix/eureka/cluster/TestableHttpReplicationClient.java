@@ -43,7 +43,7 @@ public class TestableHttpReplicationClient implements HttpReplicationClient {
     private final AtomicInteger readTimeOutCounter = new AtomicInteger();
 
     private long processingDelayMs;
-    
+
 
     private final BlockingQueue<HandledRequest> handledRequests = new LinkedBlockingQueue<>();
 
@@ -149,13 +149,13 @@ public class TestableHttpReplicationClient implements HttpReplicationClient {
 
     @Override
     public EurekaHttpResponse<ReplicationListResponse> submitBatchUpdates(ReplicationList replicationList) {
-    	
+
         if (readTimeOutCounter.get() < readtimeOutRepeatCount) {
             readTimeOutCounter.incrementAndGet();
             throw new RuntimeException(new SocketTimeoutException("Read timed out"));
         }
-    	
-    	
+
+
         if (networkFailureCounter.get() < networkFailuresRepeatCount) {
             networkFailureCounter.incrementAndGet();
             throw new RuntimeException(new IOException("simulated network failure"));

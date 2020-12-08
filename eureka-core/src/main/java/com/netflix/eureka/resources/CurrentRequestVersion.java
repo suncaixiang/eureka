@@ -48,7 +48,7 @@ public final class CurrentRequestVersion {
 
     /**
      * Sets the current {@link Version}.
-     *
+     * <p>
      * Use {@link #remove()} as soon as the version is no longer required
      * in order to purge the ThreadLocal used for storing it.
      */

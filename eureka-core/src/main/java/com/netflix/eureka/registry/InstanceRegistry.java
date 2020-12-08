@@ -41,7 +41,7 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
     /**
      * Get application information.
      *
-     * @param appName The name of the application
+     * @param appName             The name of the application
      * @param includeRemoteRegion true, if we need to include applications from remote regions
      *                            as indicated by the region {@link java.net.URL} by this property
      *                            {@link com.netflix.eureka.EurekaServerConfig#getRemoteRegionUrls()}, false otherwise
@@ -53,7 +53,7 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
      * Gets the {@link InstanceInfo} information.
      *
      * @param appName the application name for which the information is requested.
-     * @param id the unique identifier of the instance.
+     * @param id      the unique identifier of the instance.
      * @return the information about the instance.
      */
     InstanceInfo getInstanceByAppAndId(String appName, String id);
@@ -61,8 +61,8 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
     /**
      * Gets the {@link InstanceInfo} information.
      *
-     * @param appName the application name for which the information is requested.
-     * @param id the unique identifier of the instance.
+     * @param appName              the application name for which the information is requested.
+     * @param id                   the unique identifier of the instance.
      * @param includeRemoteRegions true, if we need to include applications from remote regions
      *                             as indicated by the region {@link java.net.URL} by this property
      *                             {@link com.netflix.eureka.EurekaServerConfig#getRemoteRegionUrls()}, false otherwise
@@ -88,6 +88,7 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
 
     /**
      * Checks whether lease expiration is enabled.
+     *
      * @return true if enabled
      */
     boolean isLeaseExpirationEnabled();

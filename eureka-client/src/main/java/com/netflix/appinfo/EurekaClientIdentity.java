@@ -13,7 +13,7 @@ public class EurekaClientIdentity extends AbstractEurekaIdentity {
     public EurekaClientIdentity(String id) {
         this(id, DEFAULT_CLIENT_NAME);
     }
-    
+
     public EurekaClientIdentity(String id, String clientName) {
         this.id = id;
         this.clientName = clientName;

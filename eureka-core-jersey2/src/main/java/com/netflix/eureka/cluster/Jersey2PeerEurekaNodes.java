@@ -9,15 +9,16 @@ import com.netflix.eureka.transport.Jersey2ReplicationClient;
 
 /**
  * Jersey2 implementation of PeerEurekaNodes that uses the Jersey2 replication client
+ *
  * @author Matt Nelson
  */
 public class Jersey2PeerEurekaNodes extends PeerEurekaNodes {
 
     public Jersey2PeerEurekaNodes(PeerAwareInstanceRegistry registry, EurekaServerConfig serverConfig,
-            EurekaClientConfig clientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
+                                  EurekaClientConfig clientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
         super(registry, serverConfig, clientConfig, serverCodecs, applicationInfoManager);
     }
-    
+
     @Override
     protected PeerEurekaNode createPeerEurekaNode(String peerEurekaNodeUrl) {
         HttpReplicationClient replicationClient = Jersey2ReplicationClient.createReplicationClient(serverConfig, serverCodecs, peerEurekaNodeUrl);

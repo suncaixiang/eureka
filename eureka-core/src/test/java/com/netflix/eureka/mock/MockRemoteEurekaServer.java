@@ -152,9 +152,9 @@ public class MockRemoteEurekaServer extends ExternalResource {
                     sentDelta = true;
                 } else if (request.getMethod().equals("PUT") && pathInfo.startsWith("apps")) {
                     InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
-                        .setAppName("TEST-APP").build();
+                            .setAppName("TEST-APP").build();
                     sendOkResponseWithContent((Request) request, response,
-                        new EurekaJsonJacksonCodec().getObjectMapper(Applications.class).writeValueAsString(instanceInfo));
+                            new EurekaJsonJacksonCodec().getObjectMapper(Applications.class).writeValueAsString(instanceInfo));
                     handled = true;
                 } else if (pathInfo.startsWith("apps")) {
                     Applications apps = new Applications();

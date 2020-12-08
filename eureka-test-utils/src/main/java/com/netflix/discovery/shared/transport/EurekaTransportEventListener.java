@@ -17,6 +17,7 @@
 package com.netflix.discovery.shared.transport;
 
 /**
+ *
  */
 public interface EurekaTransportEventListener {
 

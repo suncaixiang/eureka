@@ -23,7 +23,6 @@ package com.netflix.eureka;
  * <p>The latest versions are always recommended.</p>
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 public enum Version {
     V1, V2;

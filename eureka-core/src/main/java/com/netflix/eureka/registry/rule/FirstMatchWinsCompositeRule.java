@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * This rule takes an ordered list of rules and returns the result of the first match or the
  * result of the {@link AlwaysMatchInstanceStatusRule}.
- *
+ * <p>
  * Created by Nikos Michalakis on 7/13/16.
  */
 public class FirstMatchWinsCompositeRule implements InstanceStatusOverrideRule {
@@ -22,7 +22,7 @@ public class FirstMatchWinsCompositeRule implements InstanceStatusOverrideRule {
         this.rules = rules;
         this.defaultRule = new AlwaysMatchInstanceStatusRule();
         // Let's build up and "cache" the rule name to be used by toString();
-        List<String> ruleNames = new ArrayList<>(rules.length+1);
+        List<String> ruleNames = new ArrayList<>(rules.length + 1);
         for (int i = 0; i < rules.length; ++i) {
             ruleNames.add(rules[i].toString());
         }

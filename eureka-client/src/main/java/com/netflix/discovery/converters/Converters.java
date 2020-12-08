@@ -61,7 +61,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 public final class Converters {
     private static final String UNMARSHAL_ERROR = "UNMARSHAL_ERROR";
@@ -719,10 +718,8 @@ public final class Converters {
      * Marshal all the objects containing an {@link Auto} annotation
      * automatically.
      *
-     * @param o
-     *            - The object's fields that needs to be marshalled.
-     * @param writer
-     *            - The writer for which to write the information to.
+     * @param o      - The object's fields that needs to be marshalled.
+     * @param writer - The writer for which to write the information to.
      */
     private static void autoMarshalEligible(Object o,
                                             HierarchicalStreamWriter writer) {
@@ -751,11 +748,9 @@ public final class Converters {
      * Unmarshal all the elements to their field values if the fields have the
      * {@link Auto} annotation defined.
      *
-     * @param reader
-     *            - The reader where the elements can be read.
-     * @param o
-     *            - The object for which the value of fields need to be
-     *            populated.
+     * @param reader - The reader where the elements can be read.
+     * @param o      - The object for which the value of fields need to be
+     *               populated.
      */
     private static void autoUnmarshalEligible(HierarchicalStreamReader reader,
                                               Object o) {

@@ -89,7 +89,7 @@ public class SequentialEvents {
     @Override
     public String toString() {
         return "SequentialEvents{" +
-            "eventList=" + eventList +
-            '}';
+                "eventList=" + eventList +
+                '}';
     }
 }

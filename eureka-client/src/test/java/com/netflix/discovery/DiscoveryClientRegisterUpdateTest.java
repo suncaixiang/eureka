@@ -147,8 +147,8 @@ public class DiscoveryClientRegisterUpdateTest {
     }
 
     private void expectStatus(InstanceInfo.InstanceStatus expected, long timeout, TimeUnit timeUnit) throws InterruptedException {
-            String status = mockLocalEurekaServer.registrationStatusesQueue.poll(timeout, timeUnit);
-            Assert.assertEquals(expected.name(), status);
+        String status = mockLocalEurekaServer.registrationStatusesQueue.poll(timeout, timeUnit);
+        Assert.assertEquals(expected.name(), status);
     }
 
     private static <T> T getLast(List<T> list) {

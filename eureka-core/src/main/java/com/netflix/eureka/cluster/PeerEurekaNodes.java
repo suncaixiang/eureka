@@ -67,7 +67,7 @@ public class PeerEurekaNodes {
     public List<PeerEurekaNode> getPeerEurekaNodes() {
         return peerEurekaNodes;
     }
-    
+
     public int getMinNumberOfAvailablePeers() {
         return serverConfig.getHealthStatusMinNumberOfAvailablePeers();
     }
@@ -209,16 +209,15 @@ public class PeerEurekaNodes {
     }
 
     /**
+     * @param url the service url of the replica node that the check is made.
+     * @return true, if the url represents the current node which is trying to
+     * replicate, false otherwise.
      * @deprecated 2016-06-27 use instance version of {@link #isThisMyUrl(String)}
-     *
+     * <p>
      * Checks if the given service url contains the current host which is trying
      * to replicate. Only after the EIP binding is done the host has a chance to
      * identify itself in the list of replica nodes and needs to take itself out
      * of replication traffic.
-     *
-     * @param url the service url of the replica node that the check is made.
-     * @return true, if the url represents the current node which is trying to
-     *         replicate, false otherwise.
      */
     public static boolean isThisMe(String url) {
         InstanceInfo myInfo = ApplicationInfoManager.getInstance().getInfo();
@@ -234,7 +233,7 @@ public class PeerEurekaNodes {
      *
      * @param url the service url of the replica node that the check is made.
      * @return true, if the url represents the current node which is trying to
-     *         replicate, false otherwise.
+     * replicate, false otherwise.
      */
     public boolean isThisMyUrl(String url) {
         final String myUrlConfigured = serverConfig.getMyUrl();
@@ -243,11 +242,11 @@ public class PeerEurekaNodes {
         }
         return isInstanceURL(url, applicationInfoManager.getInfo());
     }
-    
+
     /**
      * Checks if the given service url matches the supplied instance
      *
-     * @param url the service url of the replica node that the check is made.
+     * @param url      the service url of the replica node that the check is made.
      * @param instance the instance to check the service url against
      * @return true, if the url represents the supplied instance, false otherwise.
      */

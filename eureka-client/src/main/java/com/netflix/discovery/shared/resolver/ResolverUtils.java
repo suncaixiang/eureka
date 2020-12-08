@@ -50,7 +50,7 @@ public final class ResolverUtils {
 
     /**
      * @return returns two element array with first item containing list of endpoints from client's zone,
-     *         and in the second list all the remaining ones
+     * and in the second list all the remaining ones
      */
     public static List<AwsEndpoint>[] splitByZone(List<AwsEndpoint> eurekaEndpoints, String myZone) {
         if (eurekaEndpoints.isEmpty()) {

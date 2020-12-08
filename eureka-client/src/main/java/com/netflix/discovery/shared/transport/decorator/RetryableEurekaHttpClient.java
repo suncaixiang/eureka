@@ -89,7 +89,7 @@ public class RetryableEurekaHttpClient extends EurekaHttpClientDecorator {
     @Override
     public void shutdown() {
         TransportUtils.shutdown(delegate.get());
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
     }

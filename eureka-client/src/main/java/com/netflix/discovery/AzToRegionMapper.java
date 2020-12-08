@@ -13,7 +13,6 @@ public interface AzToRegionMapper {
      * Returns the region for the passed availability zone.
      *
      * @param availabilityZone Availability zone for which the region is to be retrieved.
-     *
      * @return The region for the passed zone.
      */
     String getRegionForAvailabilityZone(String availabilityZone);

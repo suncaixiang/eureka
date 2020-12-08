@@ -36,10 +36,9 @@ import com.netflix.discovery.EurekaClientConfig;
 
 /**
  * Sample Eureka client that discovers the example service using Eureka and sends requests.
- *
+ * <p>
  * In this example, the program tries to get the example from the EurekaClient, and then
  * makes a REST call to a supported service endpoint
- *
  */
 public class ExampleEurekaClient {
 

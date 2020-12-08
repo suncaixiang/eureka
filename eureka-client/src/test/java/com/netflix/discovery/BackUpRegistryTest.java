@@ -73,7 +73,7 @@ public class BackUpRegistryTest {
                 applicationInfoManager,
                 new DefaultEurekaClientConfig(),
                 null,
-                Providers.of((BackupRegistry)backupRegistry),
+                Providers.of((BackupRegistry) backupRegistry),
                 ResolverUtils::randomize
         );
     }

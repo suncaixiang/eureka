@@ -24,7 +24,7 @@ public class DeserializerStringCacheTest {
         assertThat(lowerCaseValue, is("value"));
 
         JsonParser jsonParser = mock(JsonParser.class);
-        when(jsonParser.getTextCharacters()).thenReturn(new char[] {'v', 'a', 'l', 'u', 'e'});
+        when(jsonParser.getTextCharacters()).thenReturn(new char[]{'v', 'a', 'l', 'u', 'e'});
         when(jsonParser.getTextLength()).thenReturn(5);
 
         String upperCaseValue = deserializerStringCache.apply(jsonParser, CacheScope.APPLICATION_SCOPE, () -> "VALUE");
@@ -47,8 +47,7 @@ public class DeserializerStringCacheTest {
         String upperCaseValue = deserializerStringCache.apply(jsonParser, CacheScope.APPLICATION_SCOPE, () -> {
             try {
                 return jsonParser.getText().toUpperCase();
-            }
-            catch(IOException ioe) {
+            } catch (IOException ioe) {
                 // not likely from mock above
                 throw new IllegalStateException("mock threw unexpected exception", ioe);
             }

@@ -67,13 +67,13 @@ public class EurekaEventListenerTest {
 
     static class CapturingEurekaEventListener implements EurekaEventListener {
         private volatile EurekaEvent event;
-        
+
         @Override
         public void onEvent(EurekaEvent event) {
             this.event = event;
         }
     }
-    
+
     @Test
     public void testCacheRefreshEvent() throws Exception {
         CapturingEurekaEventListener listener = new CapturingEurekaEventListener();

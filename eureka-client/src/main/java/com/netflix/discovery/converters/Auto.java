@@ -32,7 +32,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})

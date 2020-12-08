@@ -17,8 +17,8 @@ public class DefaultEurekaTransportConfig implements EurekaTransportConfig {
         this.namespace = parentNamespace == null
                 ? SUB_NAMESPACE
                 : (parentNamespace.endsWith(".")
-                    ? parentNamespace + SUB_NAMESPACE
-                    : parentNamespace + "." + SUB_NAMESPACE);
+                ? parentNamespace + SUB_NAMESPACE
+                : parentNamespace + "." + SUB_NAMESPACE);
         this.configInstance = configInstance;
     }
 

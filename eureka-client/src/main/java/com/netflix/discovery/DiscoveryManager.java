@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * @author Karthik Ranganathan
  * @deprecated use EurekaModule and DI.
  *
  * <tt>Discovery Manager</tt> configures <tt>Discovery Client</tt> based on the
@@ -34,9 +35,6 @@ import org.slf4j.LoggerFactory;
  * specified by the property <em>eureka.client.props</em> and with the suffix
  * <em>.properties</em>. If the property is not specified,
  * <em>eureka-client.properties</em> is assumed as the default.
- *
- * @author Karthik Ranganathan
- *
  */
 @Deprecated
 public class DiscoveryManager {
@@ -69,9 +67,8 @@ public class DiscoveryManager {
     /**
      * Initializes the <tt>Discovery Client</tt> with the given configuration.
      *
-     * @param config
-     *            the instance info configuration that will be used for
-     *            registration with Eureka.
+     * @param config       the instance info configuration that will be used for
+     *                     registration with Eureka.
      * @param eurekaConfig the eureka client configuration of the instance.
      */
     public void initComponent(EurekaInstanceConfig config,
@@ -111,10 +108,10 @@ public class DiscoveryManager {
     }
 
     /**
-     * @deprecated use {@link #getEurekaClient()}
-     *
-     * Get the {@link DiscoveryClient}.
      * @return the client that is used to talk to eureka.
+     * @deprecated use {@link #getEurekaClient()}
+     * <p>
+     * Get the {@link DiscoveryClient}.
      */
     @Deprecated
     public DiscoveryClient getDiscoveryClient() {
@@ -122,8 +119,8 @@ public class DiscoveryManager {
     }
 
     /**
-     *
      * Get the {@link EurekaClient} implementation.
+     *
      * @return the client that is used to talk to eureka.
      */
     public EurekaClient getEurekaClient() {
@@ -132,6 +129,7 @@ public class DiscoveryManager {
 
     /**
      * Get the instance of {@link EurekaClientConfig} this instance was initialized with.
+     *
      * @return the instance of {@link EurekaClientConfig} this instance was initialized with.
      */
     public EurekaClientConfig getEurekaClientConfig() {
@@ -140,6 +138,7 @@ public class DiscoveryManager {
 
     /**
      * Get the instance of {@link EurekaInstanceConfig} this instance was initialized with.
+     *
      * @return the instance of {@link EurekaInstanceConfig} this instance was initialized with.
      */
     public EurekaInstanceConfig getEurekaInstanceConfig() {

@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
  * A <em>jersey</em> resource that handles requests for replication purposes.
  *
  * @author Karthik Ranganathan
- *
  */
 @Path("/{version}/peerreplication")
 @Produces({"application/xml", "application/json"})
@@ -67,14 +66,13 @@ public class PeerReplicationResource {
      * Process batched replication events from peer eureka nodes.
      *
      * <p>
-     *  The batched events are delegated to underlying resources to generate a
-     *  {@link ReplicationListResponse} containing the individual responses to the batched events
+     * The batched events are delegated to underlying resources to generate a
+     * {@link ReplicationListResponse} containing the individual responses to the batched events
      * </p>
      *
-     * @param replicationList
-     *            The List of replication events from peer eureka nodes
+     * @param replicationList The List of replication events from peer eureka nodes
      * @return A batched response containing the information about the responses of individual events
-     *
+     * <p>
      * 批量任務請求
      */
     @Path("batch")

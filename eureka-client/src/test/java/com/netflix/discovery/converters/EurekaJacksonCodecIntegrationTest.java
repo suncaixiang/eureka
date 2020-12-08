@@ -21,7 +21,6 @@ import com.netflix.discovery.shared.Applications;
  * specified by url via system property 'discovery.url'. It's useful for memory
  * utilization and performance tests, but since it's environment specific, the
  * tests below are @Ignore'd.
- *
  */
 @org.junit.Ignore
 public class EurekaJacksonCodecIntegrationTest {
@@ -30,7 +29,7 @@ public class EurekaJacksonCodecIntegrationTest {
 
     /**
      * parse discovery response in a long-running loop with a delay
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -46,23 +45,23 @@ public class EurekaJacksonCodecIntegrationTest {
                         + " et: " + (System.currentTimeMillis() - start));
             }
         }
-        System.out.println("test time: " 
+        System.out.println("test time: "
                 + " et: " + (System.currentTimeMillis() - testStart));
     }
-    
-    
+
+
     @Test
     public void testCuriosity() {
         char[] arr1 = "test".toCharArray();
-        char[] arr2 = new char[] {'t', 'e', 's', 't'};
-        
+        char[] arr2 = new char[]{'t', 'e', 's', 't'};
+
         System.out.println("array equals" + arr1.equals(arr2));
     }
 
     /**
      * parse discovery response with an unreasonable timeout, so that the
      * parsing job is cancelled
-     * 
+     *
      * @throws Exception
      */
     @Test

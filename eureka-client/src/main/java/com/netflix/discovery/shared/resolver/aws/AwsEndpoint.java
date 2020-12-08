@@ -22,20 +22,20 @@ public class AwsEndpoint extends DefaultEndpoint {
 
     public AwsEndpoint(String hostName, int port, boolean isSecure, String relativeUri, String region, String zone) {
         super(hostName, port, isSecure, relativeUri);
-        this.region=region;
-        this.zone=zone;
+        this.region = region;
+        this.zone = zone;
     }
 
-    public String getRegion(){
+    public String getRegion() {
         return region;
     }
 
-    public String getZone(){
+    public String getZone() {
         return zone;
     }
 
     public static List<AwsEndpoint> createForServerList(
-            List<String> hostNames, int port, boolean isSecure, String relativeUri, String region,String zone) {
+            List<String> hostNames, int port, boolean isSecure, String relativeUri, String region, String zone) {
         if (hostNames.isEmpty()) {
             return Collections.emptyList();
         }
@@ -69,9 +69,9 @@ public class AwsEndpoint extends DefaultEndpoint {
     }
 
     @Override
-    public String toString(){
-        return"AwsEndpoint{ serviceUrl='"+serviceUrl+'\''
-                +", region='"+region+'\''
-                +", zone='"+zone+'\''+'}';
+    public String toString() {
+        return "AwsEndpoint{ serviceUrl='" + serviceUrl + '\''
+                + ", region='" + region + '\''
+                + ", zone='" + zone + '\'' + '}';
     }
 }

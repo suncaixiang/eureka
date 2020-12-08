@@ -40,8 +40,8 @@ public class DnsClusterResolver implements ClusterResolver<EurekaEndpoint> {
 
     /**
      * @param rootClusterDNS cluster DNS name containing CNAME or A record.
-     * @param port Eureka sever port number
-     * @param relativeUri service relative URI that will be appended to server address
+     * @param port           Eureka sever port number
+     * @param relativeUri    service relative URI that will be appended to server address
      */
     public DnsClusterResolver(DnsService dnsService, String region, String rootClusterDNS, int port, boolean isSecure, String relativeUri) {
         this.region = region;

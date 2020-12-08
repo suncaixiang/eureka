@@ -10,21 +10,19 @@ import com.google.inject.TypeLiteral;
 import com.netflix.appinfo.InstanceInfo;
 
 /**
+ * @author elandau
  * @deprecated 2016-09-06 this class will be deleted soon. This is also an internal class.
- *
+ * <p>
  * Specific bindings for eureka status checker.
- *
+ * <p>
  * Note that this is an internal modules and ASSUMES that a binding for
  * DiscoveryClient was already set.
- *
+ * <p>
  * Exposed bindings,
- *
+ * <p>
  * &#64;UpStatus   Supplier<Boolean>
  * &#64;DownStatus Supplier<Boolean>
  * &#64;UpStatus   Observable<Boolean>
- *
- * @author elandau
- *
  */
 @Deprecated
 @Singleton

@@ -120,9 +120,9 @@ public class AbstractTester {
     }
 
     protected PeerAwareInstanceRegistryImpl makePeerAwareInstanceRegistry(EurekaServerConfig serverConfig,
-                                                                      EurekaClientConfig clientConfig,
-                                                                      ServerCodecs serverCodecs,
-                                                                      EurekaClient eurekaClient) {
+                                                                          EurekaClientConfig clientConfig,
+                                                                          ServerCodecs serverCodecs,
+                                                                          EurekaClient eurekaClient) {
         return new TestPeerAwareInstanceRegistry(serverConfig, clientConfig, serverCodecs, eurekaClient);
     }
 
@@ -267,7 +267,7 @@ public class AbstractTester {
             public void execute() {
                 for (int j = 0; j < 45; j++) {
                     registry.renew(LOCAL_REGION_APP_NAME,
-                        LOCAL_REGION_INSTANCE_1_HOSTNAME + j, false);
+                            LOCAL_REGION_INSTANCE_1_HOSTNAME + j, false);
                 }
             }
         };
@@ -282,8 +282,8 @@ public class AbstractTester {
      */
     protected SingleEvent buildEvent(int intervalTimeInSecs, SingleEvent.Action action) {
         return SingleEvent.Builder.newBuilder()
-            .withIntervalTimeInMs(intervalTimeInSecs * 1000)
-            .withAction(action).build();
+                .withIntervalTimeInMs(intervalTimeInSecs * 1000)
+                .withAction(action).build();
     }
 
     /**
@@ -298,8 +298,8 @@ public class AbstractTester {
         List<SingleEvent> result = Lists.newArrayListWithCapacity(eventCount);
         for (int i = 0; i < eventCount; i++) {
             result.add(SingleEvent.Builder.newBuilder()
-                .withIntervalTimeInMs(intervalTimeInSecs * 1000)
-                .withAction(action).build());
+                    .withIntervalTimeInMs(intervalTimeInSecs * 1000)
+                    .withAction(action).build());
         }
         return result;
     }

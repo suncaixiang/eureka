@@ -38,15 +38,15 @@ public class ApplicationsTest {
     @Test
     public void testVersionAndAppHash() {
         Applications apps = new Applications();
-        assertEquals(-1L, (long)apps.getVersion());
+        assertEquals(-1L, (long) apps.getVersion());
         assertNull(apps.getAppsHashCode());
-        
+
         apps.setVersion(101L);
         apps.setAppsHashCode("UP_5_DOWN_6_");
-        assertEquals(101L, (long)apps.getVersion());
+        assertEquals(101L, (long) apps.getVersion());
         assertEquals("UP_5_DOWN_6_", apps.getAppsHashCode());
     }
-    
+
     /**
      * Test that instancesMap in Application and shuffleVirtualHostNameMap in
      * Applications are correctly updated when the last instance is removed from
@@ -121,7 +121,7 @@ public class ApplicationsTest {
 
         assertNull(application.getByInstanceId("test.hostname"));
     }
-    
+
     /**
      * Test that instancesMap in Application and shuffleVirtualHostNameMap in
      * Applications are correctly updated when the last instance is removed from
@@ -137,7 +137,7 @@ public class ApplicationsTest {
                 .setSecureVIPAddress("securetest.testname:7102")
                 .setDataCenterInfo(ai1)
                 .setAppName("TestApp")
-                .setHostName("test.east.hostname")        
+                .setHostName("test.east.hostname")
                 .build();
         AmazonInfo ai2 = AmazonInfo.Builder.newBuilder()
                 .addMetadata(MetaDataKey.availabilityZone, "us-west-2a")
@@ -147,7 +147,7 @@ public class ApplicationsTest {
                 .setSecureVIPAddress("securetest.testname:7102")
                 .setDataCenterInfo(ai2)
                 .setAppName("TestApp")
-                .setHostName("test.west.hostname")        
+                .setHostName("test.west.hostname")
                 .build();
 
         Application application = new Application("TestApp");
@@ -161,14 +161,14 @@ public class ApplicationsTest {
         assertEquals(2, applications.size());
 
         EurekaClientConfig clientConfig = Mockito.mock(EurekaClientConfig.class);
-        Mockito.when(clientConfig.getAvailabilityZones("us-east-1")).thenReturn(new String[] {"us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"});
-        Mockito.when(clientConfig.getAvailabilityZones("us-west-2")).thenReturn(new String[] {"us-west-2a", "us-west-2b", "us-west-2c"});
+        Mockito.when(clientConfig.getAvailabilityZones("us-east-1")).thenReturn(new String[]{"us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"});
+        Mockito.when(clientConfig.getAvailabilityZones("us-west-2")).thenReturn(new String[]{"us-west-2a", "us-west-2b", "us-west-2c"});
         Mockito.when(clientConfig.getRegion()).thenReturn("us-east-1");
         Constructor<?> ctor = InstanceRegionChecker.class.getDeclaredConstructor(AzToRegionMapper.class, String.class);
         ctor.setAccessible(true);
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(clientConfig);
-        azToRegionMapper.setRegionsToFetch(new String[] {"us-east-1", "us-west-2"});
-        InstanceRegionChecker instanceRegionChecker = (InstanceRegionChecker)ctor.newInstance(azToRegionMapper, "us-west-2");
+        azToRegionMapper.setRegionsToFetch(new String[]{"us-east-1", "us-west-2"});
+        InstanceRegionChecker instanceRegionChecker = (InstanceRegionChecker) ctor.newInstance(azToRegionMapper, "us-west-2");
         Map<String, Applications> remoteRegionsRegistry = new HashMap<>();
         remoteRegionsRegistry.put("us-east-1", new Applications());
         applications.shuffleAndIndexInstances(remoteRegionsRegistry, clientConfig, instanceRegionChecker);
@@ -176,11 +176,11 @@ public class ApplicationsTest {
         assertNull(applications.getRegisteredApplications("TestApp").getByInstanceId("test.east.hostname"));
         assertNull(remoteRegionsRegistry.get("us-east-1").getRegisteredApplications("TestApp").getByInstanceId("test.west.hostname"));
         assertNotNull(applications.getRegisteredApplications("TestApp").getByInstanceId("test.west.hostname"));
-   
+
     }
 
     @Test
-    public void testInfoDetailApplications(){
+    public void testInfoDetailApplications() {
 
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
@@ -234,13 +234,13 @@ public class ApplicationsTest {
 
         Applications applications = new Applications();
         applications.addApplication(application);
-        
+
         List<Application> appsList = applications.getRegisteredApplications();
         Assert.assertEquals(1, appsList.size());
         Assert.assertTrue(appsList.contains(application));
         Assert.assertEquals(application, applications.getRegisteredApplications(application.getName()));
     }
-    
+
     @Test
     public void testRegisteredApplicationsConstructor() {
         DataCenterInfo myDCI = new DataCenterInfo() {
@@ -260,20 +260,20 @@ public class ApplicationsTest {
         application.addInstance(instanceInfo);
 
         Applications applications = new Applications("UP_1_", -1L, Arrays.asList(application));
-        
+
         List<Application> appsList = applications.getRegisteredApplications();
         Assert.assertEquals(1, appsList.size());
         Assert.assertTrue(appsList.contains(application));
         Assert.assertEquals(application, applications.getRegisteredApplications(application.getName()));
     }
-    
+
     @Test
     public void testApplicationsHashAndVersion() {
         Applications applications = new Applications("appsHashCode", 1L, Collections.emptyList());
-        assertEquals(1L, (long)applications.getVersion());
+        assertEquals(1L, (long) applications.getVersion());
         assertEquals("appsHashCode", applications.getAppsHashCode());
-    }   
-    
+    }
+
     @Test
     public void testPopulateInstanceCount() {
         DataCenterInfo myDCI = new DataCenterInfo() {
@@ -295,15 +295,15 @@ public class ApplicationsTest {
 
         Applications applications = new Applications();
         applications.addApplication(application);
-        
+
         TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<>();
         applications.populateInstanceCountMap(instanceCountMap);
         assertEquals(1, instanceCountMap.size());
         assertNotNull(instanceCountMap.get(InstanceStatus.UP.name()));
         assertEquals(1, instanceCountMap.get(InstanceStatus.UP.name()).get());
-        
+
     }
-    
+
     @Test
     public void testGetNextIndex() {
         DataCenterInfo myDCI = new DataCenterInfo() {
@@ -332,7 +332,7 @@ public class ApplicationsTest {
         assertEquals(0L, applications.getNextIndex("securetest.testname:7102", true).get());
         assertNotSame(applications.getNextIndex("test.testname:1", false), applications.getNextIndex("securetest.testname:7102", true));
     }
-    
+
     @Test
     public void testReconcileHashcode() {
         DataCenterInfo myDCI = new DataCenterInfo() {
@@ -356,13 +356,13 @@ public class ApplicationsTest {
 
         String hashCode = applications.getReconcileHashCode();
         assertTrue(hashCode.isEmpty());
-        
+
         applications.addApplication(application);
         hashCode = applications.getReconcileHashCode();
         assertFalse(hashCode.isEmpty());
         assertEquals("UP_1_", hashCode);
     }
-    
+
     @Test
     public void testInstanceFiltering() {
         DataCenterInfo myDCI = new DataCenterInfo() {
@@ -389,6 +389,6 @@ public class ApplicationsTest {
         assertNotNull(applications.getRegisteredApplications("TestApp").getByInstanceId("test.hostname"));
         assertTrue(applications.getInstancesBySecureVirtualHostName("securetest.testname:7102").isEmpty());
         assertTrue(applications.getInstancesBySecureVirtualHostName("test.testname:1").isEmpty());
-    }    
+    }
 
 }

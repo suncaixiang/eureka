@@ -85,7 +85,7 @@ public class ApplicationResourceTest extends AbstractTester {
     @Test
     public void testGoodRegistration() throws Exception {
         InstanceInfo noIdInfo = InstanceInfoGenerator.takeOne();
-        Response response = applicationResource.addInstance(noIdInfo, false+"");
+        Response response = applicationResource.addInstance(noIdInfo, false + "");
         assertThat(response.getStatus(), is(204));
     }
 
@@ -93,32 +93,32 @@ public class ApplicationResourceTest extends AbstractTester {
     public void testBadRegistration() throws Exception {
         InstanceInfo instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getId()).thenReturn(null);
-        Response response = applicationResource.addInstance(instanceInfo, false+"");
+        Response response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getHostName()).thenReturn(null);
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getIPAddr()).thenReturn(null);
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getAppName()).thenReturn("");
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getAppName()).thenReturn(applicationResource.getName() + "extraExtra");
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getDataCenterInfo()).thenReturn(null);
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
 
         instanceInfo = spy(InstanceInfoGenerator.takeOne());
@@ -128,7 +128,7 @@ public class ApplicationResourceTest extends AbstractTester {
                 return null;
             }
         });
-        response = applicationResource.addInstance(instanceInfo, false+"");
+        response = applicationResource.addInstance(instanceInfo, false + "");
         assertThat(response.getStatus(), is(400));
     }
 

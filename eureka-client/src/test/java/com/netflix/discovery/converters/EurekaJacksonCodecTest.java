@@ -228,5 +228,5 @@ public class EurekaJacksonCodecTest {
 
         assertTrue(EurekaEntityComparators.equal(decoded, INSTANCE_INFO_1_A1));
     }
-    
+
 }

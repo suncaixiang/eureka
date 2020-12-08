@@ -30,17 +30,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * @author Tomasz Bak
  * @deprecated as of 2016-02-11. Will be deleted in an upcoming release.
  * See {@link com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver} for replacement.
- *
+ * <p>
  * Server resolver that mimics the behavior of the original implementation. Either DNS or server
  * list resolvers are instantiated, and they can be swapped in runtime because of the dynamic configuration
  * change.
  * <h3>Failures</h3>
  * If there is configuration change (from DNS to server list or reverse), and the new resolver cannot be instantiated,
  * it will be retried with exponential back-off (see {@link ReloadingClusterResolver}).
- *
- * @author Tomasz Bak
  */
 @Deprecated
 public class LegacyClusterResolver implements ClusterResolver<AwsEndpoint> {

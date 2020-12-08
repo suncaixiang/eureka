@@ -24,7 +24,6 @@ import javax.inject.Singleton;
  * An {@link InstanceInfo} configuration for the non-AWS datacenter.
  *
  * @author Karthik Ranganathan
- *
  */
 @Singleton
 @ProvidedBy(MyDataCenterInstanceConfigProvider.class)

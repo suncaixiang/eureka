@@ -132,7 +132,7 @@ public final class EurekaHttpClients {
 
     /**
      * @return a bootstrap resolver that resolves eureka server endpoints based on either DNS or static config,
-     *         depending on configuration for one or the other. This resolver will warm up at the start.
+     * depending on configuration for one or the other. This resolver will warm up at the start.
      */
     static ClosableResolver<AwsEndpoint> defaultBootstrapResolver(final EurekaClientConfig clientConfig,
                                                                   final InstanceInfo myInstanceInfo,
@@ -165,7 +165,7 @@ public final class EurekaHttpClients {
 
     /**
      * @return a bootstrap resolver that resolves eureka server endpoints via a remote call to a "vip source"
-     *         the local registry, where the source is found from a rootResolver (dns or config)
+     * the local registry, where the source is found from a rootResolver (dns or config)
      */
     static ClosableResolver<AwsEndpoint> compositeBootstrapResolver(
             final EurekaClientConfig clientConfig,
@@ -173,8 +173,7 @@ public final class EurekaHttpClients {
             final TransportClientFactory transportClientFactory,
             final InstanceInfo myInstanceInfo,
             final ApplicationsResolver.ApplicationsSource applicationsSource,
-            final EndpointRandomizer randomizer)
-    {
+            final EndpointRandomizer randomizer) {
         final ClusterResolver rootResolver = new ConfigClusterResolver(clientConfig, myInstanceInfo);
 
         final EurekaHttpResolver remoteResolver = new EurekaHttpResolver(
@@ -265,10 +264,11 @@ public final class EurekaHttpClients {
 
     /**
      * @return a composite resolver that resolves eureka server endpoints for query operations, given two resolvers:
-     *         a resolver that can resolve targets via a remote call to a remote source, and a resolver that
-     *         can resolve targets via data in the local registry.
+     * a resolver that can resolve targets via a remote call to a remote source, and a resolver that
+     * can resolve targets via data in the local registry.
      */
-    /* testing */ static ClosableResolver<AwsEndpoint> compositeQueryResolver(
+    /* testing */
+    static ClosableResolver<AwsEndpoint> compositeQueryResolver(
             final ClusterResolver<AwsEndpoint> remoteResolver,
             final ClusterResolver<AwsEndpoint> localResolver,
             final EurekaClientConfig clientConfig,

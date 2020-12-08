@@ -47,7 +47,6 @@ import org.slf4j.LoggerFactory;
  * {@link com.netflix.discovery.shared.Application}.
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 @Produces({"application/xml", "application/json"})
 public class ApplicationResource {
@@ -74,13 +73,11 @@ public class ApplicationResource {
     /**
      * Gets information about a particular {@link com.netflix.discovery.shared.Application}.
      *
-     * @param version
-     *            the version of the request.
-     * @param acceptHeader
-     *            the accept header of the request to indicate whether to serve
-     *            JSON or XML data.
+     * @param version      the version of the request.
+     * @param acceptHeader the accept header of the request to indicate whether to serve
+     *                     JSON or XML data.
      * @return the response containing information about a particular
-     *         application.
+     * application.
      */
     @GET
     public Response getApplication(@PathParam("version") String version,
@@ -121,10 +118,9 @@ public class ApplicationResource {
     /**
      * Gets information about a particular instance of an application.
      *
-     * @param id
-     *            the unique identifier of the instance.
+     * @param id the unique identifier of the instance.
      * @return information about a particular instance.
-     *
+     * <p>
      * id===instanceId
      */
     @Path("{id}")
@@ -136,14 +132,10 @@ public class ApplicationResource {
      * Registers information about a particular instance for an
      * {@link com.netflix.discovery.shared.Application}.
      *
-     *
-     *
-     * @param info
-     *            {@link InstanceInfo} information of the instance.
-     * @param isReplication
-     *            a header parameter containing information whether this is
-     *            replicated from other nodes.
-     *            服务注册请求处理
+     * @param info          {@link InstanceInfo} information of the instance.
+     * @param isReplication a header parameter containing information whether this is
+     *                      replicated from other nodes.
+     *                      服务注册请求处理
      */
     @POST
     @Consumes({"application/json", "application/xml"})

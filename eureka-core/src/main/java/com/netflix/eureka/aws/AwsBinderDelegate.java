@@ -48,7 +48,7 @@ public class AwsBinderDelegate implements AwsBinder {
 
     @Override
     @PreDestroy
-    public void shutdown()  {
+    public void shutdown() {
         try {
             delegate.shutdown();
         } catch (Exception e) {

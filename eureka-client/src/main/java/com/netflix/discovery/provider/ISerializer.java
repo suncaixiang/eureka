@@ -25,7 +25,6 @@ import java.io.OutputStream;
  * A contract for dispatching to a custom serialization/de-serialization mechanism from jersey.
  *
  * @author Karthik Ranganathan
- *
  */
 public interface ISerializer {
 

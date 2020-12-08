@@ -66,9 +66,8 @@ public class EndpointUtils {
      * Get the list of all eureka service urls for the eureka client to talk to.
      *
      * @param clientConfig the clientConfig to use
-     * @param zone the zone in which the client resides
-     * @param randomizer a randomizer to randomized returned urls, if loading from dns
-     *
+     * @param zone         the zone in which the client resides
+     * @param randomizer   a randomizer to randomized returned urls, if loading from dns
      * @return The list of all eureka service urls for the eureka client to talk to.
      */
     public static List<String> getDiscoveryServiceUrls(EurekaClientConfig clientConfig, String zone, ServiceUrlRandomizer randomizer) {
@@ -85,11 +84,10 @@ public class EndpointUtils {
      * other zones randomly. If there are multiple servers in the same zone, the client once
      * again picks one randomly. This way the traffic will be distributed in the case of failures.
      *
-     * @param clientConfig the clientConfig to use
-     * @param instanceZone The zone in which the client resides.
+     * @param clientConfig   the clientConfig to use
+     * @param instanceZone   The zone in which the client resides.
      * @param preferSameZone true if we have to prefer the same zone as the client, false otherwise.
-     * @param randomizer a randomizer to randomized returned urls
-     *
+     * @param randomizer     a randomizer to randomized returned urls
      * @return The list of all eureka service urls for the eureka client to talk to.
      */
     public static List<String> getServiceUrlsFromDNS(EurekaClientConfig clientConfig, String instanceZone, boolean preferSameZone, ServiceUrlRandomizer randomizer) {
@@ -182,8 +180,8 @@ public class EndpointUtils {
     /**
      * Get the list of all eureka service urls from properties file for the eureka client to talk to.
      *
-     * @param clientConfig the clientConfig to use
-     * @param instanceZone The zone in which the client resides
+     * @param clientConfig   the clientConfig to use
+     * @param instanceZone   The zone in which the client resides
      * @param preferSameZone true if we have to prefer the same zone as the client, false otherwise
      * @return The list of all eureka service urls for the eureka client to talk to
      */
@@ -224,8 +222,8 @@ public class EndpointUtils {
     /**
      * Get the list of all eureka service urls from properties file for the eureka client to talk to.
      *
-     * @param clientConfig the clientConfig to use
-     * @param instanceZone The zone in which the client resides
+     * @param clientConfig   the clientConfig to use
+     * @param instanceZone   The zone in which the client resides
      * @param preferSameZone true if we have to prefer the same zone as the client, false otherwise
      * @return an (ordered) map of zone -> list of urls mappings, with the preferred zone first in iteration order
      */
@@ -269,7 +267,7 @@ public class EndpointUtils {
      * Get the list of EC2 URLs given the zone name.
      *
      * @param dnsName The dns name of the zone-specific CNAME
-     * @param type CNAME or EIP that needs to be retrieved
+     * @param type    CNAME or EIP that needs to be retrieved
      * @return The list of EC2 URLs associated with the dns name
      */
     public static Set<String> getEC2DiscoveryUrlsFromZone(String dnsName, DiscoveryUrlType type) {
@@ -308,10 +306,9 @@ public class EndpointUtils {
     /**
      * Get the zone based CNAMES that are bound to a region.
      *
-     * @param region
-     *            - The region for which the zone names need to be retrieved
+     * @param region - The region for which the zone names need to be retrieved
      * @return - The list of CNAMES from which the zone-related information can
-     *         be retrieved
+     * be retrieved
      */
     public static Map<String, List<String>> getZoneBasedDiscoveryUrlsFromRegion(EurekaClientConfig clientConfig, String region) {
         String discoveryDnsName = null;

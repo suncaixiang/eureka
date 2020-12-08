@@ -30,7 +30,7 @@ task copyLibs(type: Copy) {
 }
 //找到一些jsp代码。eureka server本质上就是一个web应用
 war {
-    from (project(':eureka-resources').file('build/resources/main'))
+    from(project(':eureka-resources').file('build/resources/main'))
 }
 
 // Integration test loads eureka war, so it must be ready prior to running tests

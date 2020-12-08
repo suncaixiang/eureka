@@ -11,7 +11,7 @@ dependencies {
 startScripts.enabled = false
 run.enabled = false
 
-task runExampleService (dependsOn: [classes], type: JavaExec) {
+task runExampleService(dependsOn: [classes], type: JavaExec) {
     group = "Run tasks"
     description = "Run the example service"
 
@@ -20,7 +20,7 @@ task runExampleService (dependsOn: [classes], type: JavaExec) {
     jvmArgs(["-Deureka.client.props=sample-eureka-service"])
 }
 
-task runExampleGovernatedService (dependsOn: [classes], type: JavaExec) {
+task runExampleGovernatedService(dependsOn: [classes], type: JavaExec) {
     group = "Run tasks"
     description = "Run the example service"
 
@@ -29,7 +29,7 @@ task runExampleGovernatedService (dependsOn: [classes], type: JavaExec) {
     jvmArgs(["-Deureka.client.props=sample-eureka-service"])
 }
 
-task runExampleClient (dependsOn: [classes], type: JavaExec) {
+task runExampleClient(dependsOn: [classes], type: JavaExec) {
     group = "Run tasks"
     description = "Run the example client"
 

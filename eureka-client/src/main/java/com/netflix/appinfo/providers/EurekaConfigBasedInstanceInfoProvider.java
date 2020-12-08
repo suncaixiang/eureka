@@ -19,12 +19,11 @@ import org.slf4j.LoggerFactory;
 /**
  * InstanceInfo provider that constructs the InstanceInfo this this instance using
  * EurekaInstanceConfig.
- *
+ * <p>
  * This provider is @Singleton scope as it provides the InstanceInfo for both DiscoveryClient
  * and ApplicationInfoManager, and need to provide the same InstanceInfo to both.
  *
  * @author elandau
- *
  */
 @Singleton
 public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceInfo> {
@@ -47,6 +46,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
      * InstanceInfo 是当前这个服务实例的实例本身的信息，使用了建造者模式，InstanceInfo.builder来构造一个复杂的代表一个服务实例的
      * InstanceInfo对象。
      * 从之前的EurekaInstanceConfig中获取各种各样服务实例相关的配置，再构造几个其他的对象，从而构成InstanceInfo对象。
+     *
      * @return
      */
     @Override
@@ -117,8 +117,8 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
                 builder.setStatus(initialStatus);
             } else {
                 LOG.info("Setting initial instance status as: {}. This may be too early for the instance to advertise "
-                         + "itself as available. You would instead want to control this via a healthcheck handler.",
-                         InstanceStatus.UP);
+                                + "itself as available. You would instead want to control this via a healthcheck handler.",
+                        InstanceStatus.UP);
             }
 
             // Add any user-specific metadata information

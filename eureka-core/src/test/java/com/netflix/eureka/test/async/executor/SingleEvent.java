@@ -75,9 +75,9 @@ public class SingleEvent {
     @Override
     public String toString() {
         return "SingleEvent{" +
-            "intervalTimeInMs=" + intervalTimeInMs +
-            ", action=" + action +
-            '}';
+                "intervalTimeInMs=" + intervalTimeInMs +
+                ", action=" + action +
+                '}';
     }
 
     /**

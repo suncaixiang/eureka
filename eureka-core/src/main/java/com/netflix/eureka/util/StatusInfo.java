@@ -147,10 +147,10 @@ public class StatusInfo {
     }
 
     private static boolean classExists(String className) {
-        try  {
+        try {
             Class.forName(className);
             return true;
-        }  catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }

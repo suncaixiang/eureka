@@ -70,9 +70,9 @@ public class AwsInstanceRegistryTest extends InstanceRegistryTest {
 
     @Override
     protected PeerAwareInstanceRegistryImpl makePeerAwareInstanceRegistry(EurekaServerConfig serverConfig,
-                                                                      EurekaClientConfig clientConfig,
-                                                                      ServerCodecs serverCodecs,
-                                                                      EurekaClient eurekaClient) {
+                                                                          EurekaClientConfig clientConfig,
+                                                                          ServerCodecs serverCodecs,
+                                                                          EurekaClient eurekaClient) {
         return new TestAwsInstanceRegistry(serverConfig, clientConfig, serverCodecs, eurekaClient);
     }
 
@@ -80,9 +80,9 @@ public class AwsInstanceRegistryTest extends InstanceRegistryTest {
     private static class TestAwsInstanceRegistry extends AwsInstanceRegistry {
 
         public TestAwsInstanceRegistry(EurekaServerConfig serverConfig,
-                                             EurekaClientConfig clientConfig,
-                                             ServerCodecs serverCodecs,
-                                             EurekaClient eurekaClient) {
+                                       EurekaClientConfig clientConfig,
+                                       ServerCodecs serverCodecs,
+                                       EurekaClient eurekaClient) {
             super(serverConfig, clientConfig, serverCodecs, eurekaClient);
         }
 

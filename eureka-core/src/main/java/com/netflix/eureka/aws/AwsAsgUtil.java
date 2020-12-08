@@ -78,7 +78,6 @@ import org.slf4j.LoggerFactory;
  * autoscaling groups using the AWS APIs.
  *
  * @author Karthik Ranganathan
- *
  */
 @Singleton
 public class AwsAsgUtil implements AsgClient {
@@ -99,7 +98,7 @@ public class AwsAsgUtil implements AsgClient {
                     thread.setDaemon(true);
                     return thread;
                 }
-    });
+            });
 
     private ListeningExecutorService listeningCacheReloadExecutor = MoreExecutors.listeningDecorator(cacheReloadExecutor);
 
@@ -128,6 +127,7 @@ public class AwsAsgUtil implements AsgClient {
                     public Boolean load(CacheKey key) throws Exception {
                         return isASGEnabledinAWS(key.asgAccountId, key.asgName);
                     }
+
                     @Override
                     public ListenableFuture<Boolean> reload(final CacheKey key, Boolean oldValue) throws Exception {
                         return listeningCacheReloadExecutor.submit(new Callable<Boolean>() {
@@ -171,8 +171,8 @@ public class AwsAsgUtil implements AsgClient {
                 // period, but no new values will be fetched while disabled.
 
                 logger.info(("'{}' is not cached at the moment and won't be fetched because querying AWS ASGs "
-                        + "has been disabled via the config, returning the fallback value."),
-                            cacheKey);
+                                + "has been disabled via the config, returning the fallback value."),
+                        cacheKey);
 
                 return true;
             }
@@ -199,13 +199,12 @@ public class AwsAsgUtil implements AsgClient {
      * Check if the ASG is disabled. The amazon flag "AddToLoadBalancer" is
      * queried to figure out if it is or not.
      *
-     * @param asgName
-     *            - The name of the ASG for which the status needs to be queried
+     * @param asgName - The name of the ASG for which the status needs to be queried
      * @return - true if the ASG is disabled, false otherwise
      */
     private boolean isAddToLoadBalancerSuspended(String asgAccountId, String asgName) {
         AutoScalingGroup asg;
-        if(asgAccountId == null || asgAccountId.equals(accountId)) {
+        if (asgAccountId == null || asgAccountId.equals(accountId)) {
             asg = retrieveAutoScalingGroup(asgName);
         } else {
             asg = retrieveAutoScalingGroupCrossAccount(asgAccountId, asgName);
@@ -220,10 +219,9 @@ public class AwsAsgUtil implements AsgClient {
     /**
      * Checks if the load balancer addition is disabled or not.
      *
-     * @param asg
-     *            - The ASG object for which the status needs to be checked
+     * @param asg - The ASG object for which the status needs to be checked
      * @return - true, if the load balancer addition is suspended, false
-     *         otherwise.
+     * otherwise.
      */
     private boolean isAddToLoadBalancerSuspended(AutoScalingGroup asg) {
         List<SuspendedProcess> suspendedProcesses = asg.getSuspendedProcesses();
@@ -238,8 +236,7 @@ public class AwsAsgUtil implements AsgClient {
     /**
      * Queries AWS to get the autoscaling information given the asgName.
      *
-     * @param asgName
-     *            - The name of the ASG.
+     * @param asgName - The name of the ASG.
      * @return - The auto scaling group information.
      */
     private AutoScalingGroup retrieveAutoScalingGroup(String asgName) {
@@ -271,8 +268,8 @@ public class AwsAsgUtil implements AsgClient {
         String roleArn = "arn:aws:iam::" + asgAccount + ":role/" + roleName;
 
         AssumeRoleResult assumeRoleResult = sts.assumeRole(new AssumeRoleRequest()
-                        .withRoleArn(roleArn)
-                        .withRoleSessionName("sts-session-" + asgAccount)
+                .withRoleArn(roleArn)
+                .withRoleSessionName("sts-session-" + asgAccount)
         );
 
         return assumeRoleResult.getCredentials();
@@ -320,7 +317,7 @@ public class AwsAsgUtil implements AsgClient {
      * Queries AWS to see if the load balancer flag is suspended.
      *
      * @param asgAccountid the accountId this asg resides in, if applicable (null will use the default accountId)
-     * @param asgName the name of the asg
+     * @param asgName      the name of the asg
      * @return true, if the load balancer flag is not suspended, false otherwise.
      */
     private Boolean isASGEnabledinAWS(String asgAccountid, String asgName) {
@@ -339,7 +336,7 @@ public class AwsAsgUtil implements AsgClient {
      * Gets the number of elements in the ASG cache.
      *
      * @return the long value representing the number of elements in the ASG
-     *         cache.
+     * cache.
      */
     @com.netflix.servo.annotations.Monitor(name = "numOfElementsinASGCache",
             description = "Number of elements in the ASG Cache", type = DataSourceType.GAUGE)
@@ -351,7 +348,7 @@ public class AwsAsgUtil implements AsgClient {
      * Gets the number of ASG queries done in the period.
      *
      * @return the long value representing the number of ASG queries done in the
-     *         period.
+     * period.
      */
     @com.netflix.servo.annotations.Monitor(name = "numOfASGQueries",
             description = "Number of queries made to AWS to retrieve ASG information", type = DataSourceType.COUNTER)
@@ -363,7 +360,7 @@ public class AwsAsgUtil implements AsgClient {
      * Gets the number of ASG queries that failed because of some reason.
      *
      * @return the long value representing the number of ASG queries that failed
-     *         because of some reason.
+     * because of some reason.
      */
     @com.netflix.servo.annotations.Monitor(name = "numOfASGQueryFailures",
             description = "Number of queries made to AWS to retrieve ASG information and that failed",

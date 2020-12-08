@@ -158,7 +158,7 @@ public class InstanceInfoGenerator {
 
     public Applications takeDeltaForDelete(boolean useInstanceId, int instanceCount) {
         List<InstanceInfo> instanceInfoList = new ArrayList<>();
-        for (int i = 0; i < instanceCount; i ++) {
+        for (int i = 0; i < instanceCount; i++) {
             instanceInfoList.add(this.generateInstanceInfo(i, i, useInstanceId, ActionType.DELETED));
         }
         Applications delete = EurekaEntityFunctions.toApplications(toApplicationMap(instanceInfoList));

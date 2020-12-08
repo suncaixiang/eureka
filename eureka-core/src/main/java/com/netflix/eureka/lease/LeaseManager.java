@@ -29,20 +29,17 @@ import com.netflix.eureka.registry.AbstractInstanceRegistry;
  * or not.
  * <p>
  *
- * @author Karthik Ranganathan, Greg Kim
- *
  * @param <T>
+ * @author Karthik Ranganathan, Greg Kim
  */
 public interface LeaseManager<T> {
 
     /**
      * Assign a new {@link Lease} to the passed in {@link T}.
      *
-     * @param r
-     *            - T to register
+     * @param r             - T to register
      * @param leaseDuration
-     * @param isReplication
-     *            - whether this is a replicated entry from another eureka node.
+     * @param isReplication - whether this is a replicated entry from another eureka node.
      */
     void register(T r, int leaseDuration, boolean isReplication);
 
@@ -50,12 +47,9 @@ public interface LeaseManager<T> {
      * Cancel the {@link Lease} associated w/ the passed in <code>appName</code>
      * and <code>id</code>.
      *
-     * @param appName
-     *            - unique id of the application.
-     * @param id
-     *            - unique id within appName.
-     * @param isReplication
-     *            - whether this is a replicated entry from another eureka node.
+     * @param appName       - unique id of the application.
+     * @param id            - unique id within appName.
+     * @param isReplication - whether this is a replicated entry from another eureka node.
      * @return true, if the operation was successful, false otherwise.
      */
     boolean cancel(String appName, String id, boolean isReplication);
@@ -64,10 +58,8 @@ public interface LeaseManager<T> {
      * Renew the {@link Lease} associated w/ the passed in <code>appName</code>
      * and <code>id</code>.
      *
-     * @param id
-     *            - unique id within appName
-     * @param isReplication
-     *            - whether this is a replicated entry from another ds node
+     * @param id            - unique id within appName
+     * @param isReplication - whether this is a replicated entry from another ds node
      * @return whether the operation of successful
      */
     boolean renew(String appName, String id, boolean isReplication);

@@ -46,7 +46,6 @@ import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.*;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 public abstract class PropertiesInstanceConfig extends AbstractInstanceConfig implements EurekaInstanceConfig {
 
@@ -297,6 +296,7 @@ public abstract class PropertiesInstanceConfig extends AbstractInstanceConfig im
 
     /**
      * Indicates if the public ipv4 address of the instance should be advertised.
+     *
      * @return true if the public ipv4 address of the instance should be advertised, false otherwise .
      */
     public boolean shouldBroadcastPublicIpv4Addr() {

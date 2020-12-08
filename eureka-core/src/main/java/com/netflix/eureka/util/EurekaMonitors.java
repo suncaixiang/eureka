@@ -37,7 +37,6 @@ import com.netflix.servo.monitor.Monitors;
  * <p>
  *
  * @author Karthik Ranganathan, Greg Kim
- *
  */
 public enum EurekaMonitors {
     RENEW("renewCounter", "Number of total renews seen since startup"),
@@ -105,8 +104,7 @@ public enum EurekaMonitors {
      * because of replication from other eureka servers or it is a eureka client
      * initiated action.
      *
-     * @param isReplication
-     *            true if this a replication, false otherwise.
+     * @param isReplication true if this a replication, false otherwise.
      */
     public void increment(boolean isReplication) {
         counter.incrementAndGet();
@@ -148,7 +146,7 @@ public enum EurekaMonitors {
      * Gets the actual counter value for this statistic.
      *
      * @return the long value representing the number of times this statistic
-     *         has occurred.
+     * has occurred.
      */
     public long getCount() {
         return counter.get();
@@ -159,7 +157,7 @@ public enum EurekaMonitors {
      * application only for AWS cloud environment.
      *
      * @return the long value representing the number of times this statistic
-     *         has occurred.
+     * has occurred.
      */
     public long getZoneSpecificCount() {
         return myZoneCounter.get();

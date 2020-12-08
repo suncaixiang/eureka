@@ -54,7 +54,7 @@ public class StatusUtil {
         builder.add("registered-replicas", replicaHostNames.toString());
         builder.add("available-replicas", upReplicas.toString());
         builder.add("unavailable-replicas", downReplicas.toString());
-        
+
         // Only set the healthy flag if a threshold has been configured.
         if (peerEurekaNodes.getMinNumberOfAvailablePeers() > -1) {
             builder.isHealthy(upReplicasCount >= peerEurekaNodes.getMinNumberOfAvailablePeers());

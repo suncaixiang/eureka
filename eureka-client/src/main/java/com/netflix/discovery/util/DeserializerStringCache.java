@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectReader;
  * that works with Jackson's DeserializationContext. Definitely NOT thread-safe,
  * intended to avoid the costs associated with thread synchronization and
  * short-lived heap allocations (e.g., Strings)
- *
  */
 public class DeserializerStringCache implements Function<String, String> {
 
@@ -47,30 +46,28 @@ public class DeserializerStringCache implements Function<String, String> {
 
     /**
      * adds a new DeserializerStringCache to the passed-in ObjectReader
-     * 
+     *
      * @param reader
      * @return a wrapped ObjectReader with the string cache attribute
      */
     public static ObjectReader init(ObjectReader reader) {
         return reader.withAttribute(ATTR_STRING_CACHE, new DeserializerStringCache(
                 new HashMap<CharBuffer, String>(2048), new LinkedHashMap<CharBuffer, String>(4096, 0.75f, true) {
-                    @Override
-                    protected boolean removeEldestEntry(Entry<CharBuffer, String> eldest) {
-                        return size() > LRU_LIMIT;
-                    }
+            @Override
+            protected boolean removeEldestEntry(Entry<CharBuffer, String> eldest) {
+                return size() > LRU_LIMIT;
+            }
 
-                }));
+        }));
     }
 
     /**
      * adds an existing DeserializerStringCache from the DeserializationContext
      * to an ObjectReader
-     * 
-     * @param reader
-     *            a new ObjectReader
-     * @param context
-     *            an existing DeserializationContext containing a
-     *            DeserializerStringCache
+     *
+     * @param reader  a new ObjectReader
+     * @param context an existing DeserializationContext containing a
+     *                DeserializerStringCache
      * @return a wrapped ObjectReader with the string cache attribute
      */
     public static ObjectReader init(ObjectReader reader, DeserializationContext context) {
@@ -83,10 +80,9 @@ public class DeserializerStringCache implements Function<String, String> {
 
     /**
      * extracts a DeserializerStringCache from the DeserializationContext
-     * 
-     * @param context
-     *            an existing DeserializationContext containing a
-     *            DeserializerStringCache
+     *
+     * @param context an existing DeserializationContext containing a
+     *                DeserializerStringCache
      * @return a wrapped ObjectReader with the string cache attribute
      */
     public static DeserializerStringCache from(DeserializationContext context) {
@@ -101,7 +97,7 @@ public class DeserializerStringCache implements Function<String, String> {
 
     /**
      * clears app-scoped cache entries from the specified ObjectReader
-     * 
+     *
      * @param reader
      */
     public static void clear(ObjectReader reader) {
@@ -111,7 +107,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * clears cache entries in the given scope from the specified ObjectReader.
      * Always clears app-scoped entries.
-     * 
+     *
      * @param reader
      * @param scope
      */
@@ -131,7 +127,7 @@ public class DeserializerStringCache implements Function<String, String> {
 
     /**
      * clears app-scoped cache entries from the specified DeserializationContext
-     * 
+     *
      * @param context
      */
     public static void clear(DeserializationContext context) {
@@ -141,7 +137,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * clears cache entries in the given scope from the specified
      * DeserializationContext. Always clears app-scoped entries.
-     * 
+     *
      * @param context
      * @param scope
      */
@@ -183,7 +179,7 @@ public class DeserializerStringCache implements Function<String, String> {
      * returns a String read from the JsonParser argument's current position.
      * The returned value may be interned at the app scope to reduce heap
      * consumption
-     * 
+     *
      * @param jp
      * @return a possibly interned String
      * @throws IOException
@@ -200,7 +196,7 @@ public class DeserializerStringCache implements Function<String, String> {
      * returns a String read from the JsonParser argument's current position.
      * The returned value may be interned at the given cacheScope to reduce heap
      * consumption
-     * 
+     *
      * @param jp
      * @param cacheScope
      * @return a possibly interned String
@@ -213,7 +209,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * returns a String that may be interned at app-scope to reduce heap
      * consumption
-     * 
+     *
      * @param charValue
      * @return a possibly interned String
      */
@@ -224,7 +220,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * returns a object of type T that may be interned at the specified scope to
      * reduce heap consumption
-     * 
+     *
      * @param charValue
      * @param cacheScope
      * @param trabsform
@@ -250,7 +246,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * returns a String that may be interned at the app-scope to reduce heap
      * consumption
-     * 
+     *
      * @param stringValue
      * @return a possibly interned String
      */
@@ -262,7 +258,7 @@ public class DeserializerStringCache implements Function<String, String> {
     /**
      * returns a String that may be interned at the given scope to reduce heap
      * consumption
-     * 
+     *
      * @param stringValue
      * @param cacheScope
      * @return a possibly interned String
@@ -323,7 +319,7 @@ public class DeserializerStringCache implements Function<String, String> {
                 this.length = source.getTextLength();
                 this.valueTransform = valueTransform;
                 this.variant = valueTransform == null ? DEFAULT_VARIANT : System.identityHashCode(valueTransform.getClass());
-                this.hash =  31 * arrayHash(this.source, offset, length) + variant;
+                this.hash = 31 * arrayHash(this.source, offset, length) + variant;
             }
 
             @Override
@@ -353,7 +349,7 @@ public class DeserializerStringCache implements Function<String, String> {
                                     return false;
                                 }
                             }
-                        return true;
+                            return true;
                         }
                     }
                 }
@@ -380,7 +376,7 @@ public class DeserializerStringCache implements Function<String, String> {
 
             @Override
             public String toString() {
-                return valueTransform  == null ? new String(this.source, offset, length) : valueTransform.get();
+                return valueTransform == null ? new String(this.source, offset, length) : valueTransform.get();
             }
 
             @Override
@@ -416,7 +412,7 @@ public class DeserializerStringCache implements Function<String, String> {
                 this.source = source;
                 this.variant = variant;
                 this.hashCode = 31 * source.hashCode() + variant;
-            }            
+            }
 
             @Override
             public int hashCode() {

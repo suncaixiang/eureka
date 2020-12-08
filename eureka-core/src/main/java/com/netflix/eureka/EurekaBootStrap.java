@@ -65,7 +65,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Karthik Ranganathan, Greg Kim, David Liu
- *
  */
 public class EurekaBootStrap implements ServletContextListener {
     private static final Logger logger = LoggerFactory.getLogger(EurekaBootStrap.class);
@@ -85,7 +84,7 @@ public class EurekaBootStrap implements ServletContextListener {
 
     protected volatile EurekaServerContext serverContext;
     protected volatile AwsBinder awsBinder;
-    
+
     private EurekaClient eurekaClient;
 
     /**
@@ -94,10 +93,10 @@ public class EurekaBootStrap implements ServletContextListener {
     public EurekaBootStrap() {
         this(null);
     }
-    
+
     /**
      * Construct an instance of eureka bootstrap with the supplied eureka client
-     * 
+     *
      * @param eurekaClient the eureka client to bootstrap
      */
     public EurekaBootStrap(EurekaClient eurekaClient) {
@@ -107,8 +106,8 @@ public class EurekaBootStrap implements ServletContextListener {
     /**
      * Initializes Eureka, including syncing up with other Eureka peers and publishing the registry.
      * eureka-server启动初始化的入口
-     * @see
-     * javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
+     *
+     * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
      */
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -172,13 +171,13 @@ public class EurekaBootStrap implements ServletContextListener {
         ApplicationInfoManager applicationInfoManager = null;
 
         if (eurekaClient == null) {
-            //2.1 eureka实例配置信息。也是加载eureka client获取到的
+            //2.1 eureka实例配置信息。也是加载eureka client获取
             EurekaInstanceConfig instanceConfig = isCloud(ConfigurationManager.getDeploymentContext())
                     ? new CloudInstanceConfig()
                     : new MyDataCenterInstanceConfig();
 
             //new EurekaConfigBasedInstanceInfoProvider(instanceConfig).get()---基于构造器模式，构建服务实例InstanceInfo
-            //2.2基于eureka client配置信息以及服务实例信息，构建服务实例管理器ApplicationInfoManager
+            //2.2基于eureka client配置信息以及服务实例信息--构建服务实例管理器ApplicationInfoManager
             applicationInfoManager = new ApplicationInfoManager(
                     instanceConfig, new EurekaConfigBasedInstanceInfoProvider(instanceConfig).get());
 
@@ -204,7 +203,7 @@ public class EurekaBootStrap implements ServletContextListener {
             awsBinder.start();
         } else {
             //3.new PeerAwareInstanceRegistryImpl()构造函数中
-            //用来移除recentlyChangedQueue队列中超过3分钟的数据
+            //用来移除recentlyChangedQueue队列中变更时间超过3分钟的数据
             registry = new PeerAwareInstanceRegistryImpl(
                     eurekaServerConfig,
                     eurekaClient.getEurekaClientConfig(),
@@ -251,7 +250,7 @@ public class EurekaBootStrap implements ServletContextListener {
         //7.注册所有的监控
         EurekaMonitors.registerAllStats();
     }
-    
+
     protected PeerEurekaNodes getPeerEurekaNodes(PeerAwareInstanceRegistry registry, EurekaServerConfig eurekaServerConfig, EurekaClientConfig eurekaClientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
         PeerEurekaNodes peerEurekaNodes = new PeerEurekaNodes(
                 registry,
@@ -260,7 +259,7 @@ public class EurekaBootStrap implements ServletContextListener {
                 serverCodecs,
                 applicationInfoManager
         );
-        
+
         return peerEurekaNodes;
     }
 

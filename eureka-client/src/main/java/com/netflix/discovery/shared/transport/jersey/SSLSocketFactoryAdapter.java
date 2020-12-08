@@ -25,7 +25,6 @@ import org.apache.http.protocol.HttpContext;
  * deprecated pre 4.3 APIs to use SSL improvements from 4.3, e.g. SNI.
  *
  * @author William Tran
- *
  */
 public class SSLSocketFactoryAdapter extends SSLSocketFactory {
 
@@ -37,7 +36,7 @@ public class SSLSocketFactoryAdapter extends SSLSocketFactory {
         super(DummySSLSocketFactory.INSTANCE, DummyX509HostnameVerifier.INSTANCE);
         this.factory = factory;
     }
-    
+
     public SSLSocketFactoryAdapter(SSLConnectionSocketFactory factory, HostnameVerifier hostnameVerifier) {
         super(DummySSLSocketFactory.INSTANCE, new WrappedX509HostnameVerifier(hostnameVerifier));
         this.factory = factory;
@@ -133,9 +132,10 @@ public class SSLSocketFactoryAdapter extends SSLSocketFactory {
         }
 
     }
-    
+
     private static class WrappedX509HostnameVerifier extends DummyX509HostnameVerifier {
         HostnameVerifier hostnameVerifier;
+
         private WrappedX509HostnameVerifier(HostnameVerifier hostnameVerifier) {
             this.hostnameVerifier = hostnameVerifier;
         }

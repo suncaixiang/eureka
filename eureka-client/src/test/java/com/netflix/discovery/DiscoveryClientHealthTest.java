@@ -144,7 +144,7 @@ public class DiscoveryClientHealthTest extends AbstractDiscoveryClientTester {
         Collections.shuffle(threads);
         threads.forEach(Thread::start);
 
-       try {
+        try {
             finishLatch.await();
             discoveryClients.forEach(client ->
                     Assert.assertSame("Healthcheck handler should be custom.", myHealthCheckHandler, client.getHealthCheckHandler()));

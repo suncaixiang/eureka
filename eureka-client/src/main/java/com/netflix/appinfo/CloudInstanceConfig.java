@@ -37,14 +37,13 @@ import javax.inject.Singleton;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 @Singleton
 @ProvidedBy(CloudInstanceConfigProvider.class)
 public class CloudInstanceConfig extends PropertiesInstanceConfig implements RefreshableInstanceConfig {
     private static final Logger logger = LoggerFactory.getLogger(CloudInstanceConfig.class);
 
-    private static final String[] DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER = new String[] {
+    private static final String[] DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER = new String[]{
             MetaDataKey.publicHostname.name(),
             MetaDataKey.localIpv4.name()
     };
@@ -82,7 +81,7 @@ public class CloudInstanceConfig extends PropertiesInstanceConfig implements Ref
                         public String getFallbackHostname() {
                             return CloudInstanceConfig.super.getHostName(false);
                         }
-            };
+                    };
             this.amazonInfoHolder = new RefreshableAmazonInfoProvider(amazonInfoConfig, fallbackAddressProvider);
         } else {
             this.amazonInfoHolder = new RefreshableAmazonInfoProvider(initialInfo, amazonInfoConfig);
@@ -128,13 +127,14 @@ public class CloudInstanceConfig extends PropertiesInstanceConfig implements Ref
 
     @Override
     public String getIpAddress() {
-        return this.shouldBroadcastPublicIpv4Addr() ?  getPublicIpv4Addr() : getPrivateIpv4Addr();
+        return this.shouldBroadcastPublicIpv4Addr() ? getPublicIpv4Addr() : getPrivateIpv4Addr();
     }
 
     private String getPrivateIpv4Addr() {
         String privateIpv4Addr = amazonInfoHolder.get().get(MetaDataKey.localIpv4);
         return privateIpv4Addr == null ? super.getIpAddress() : privateIpv4Addr;
     }
+
     private String getPublicIpv4Addr() {
         String publicIpv4Addr = amazonInfoHolder.get().get(MetaDataKey.publicIpv4);
         return publicIpv4Addr == null ? super.getIpAddress() : publicIpv4Addr;
@@ -153,7 +153,7 @@ public class CloudInstanceConfig extends PropertiesInstanceConfig implements Ref
 
     /**
      * @deprecated 2016-09-07
-     *
+     * <p>
      * Refresh instance info - currently only used when in AWS cloud
      * as a public ip can change whenever an EIP is associated or dissociated.
      */

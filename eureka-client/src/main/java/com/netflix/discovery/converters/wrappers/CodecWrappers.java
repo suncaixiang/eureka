@@ -19,7 +19,7 @@ import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl;
 /**
  * This is just a helper class during transition when multiple codecs are supported. One day this should all go away
  * when there is only 1 type of json and xml codecs each.
- *
+ * <p>
  * For adding custom codecs to Discovery, prefer creating a custom EurekaJerseyClient to added to DiscoveryClient
  * either completely independently or via
  * {@link EurekaJerseyClientImpl.EurekaJerseyClientBuilder#withDecoderWrapper(DecoderWrapper)}

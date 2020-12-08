@@ -90,11 +90,11 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
     }
 
     /**
-     * @param delegate the delegate resolver to async resolve from
-     * @param initialValue the initial value to use
+     * @param delegate               the delegate resolver to async resolve from
+     * @param initialValue           the initial value to use
      * @param executorThreadPoolSize the max number of threads for the threadpool
-     * @param refreshIntervalMs the async refresh interval
-     * @param warmUpTimeoutMs the time to wait for the initial warm up
+     * @param refreshIntervalMs      the async refresh interval
+     * @param warmUpTimeoutMs        the time to wait for the initial warm up
      */
     AsyncResolver(String name,
                   ClusterResolver<T> delegate,
@@ -138,7 +138,7 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
 
     @Override
     public void shutdown() {
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
         executorService.shutdownNow();

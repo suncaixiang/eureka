@@ -58,7 +58,6 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * </p>
  *
  * @author Karthik Ranganathan
- *
  */
 @Serializer("com.netflix.discovery.converters.EntityBodyConverter")
 @XStreamAlias("applications")
@@ -101,8 +100,8 @@ public class Applications {
      */
     @JsonCreator
     public Applications(@JsonProperty("appsHashCode") String appsHashCode,
-            @JsonProperty("versionDelta") Long versionDelta,
-            @JsonProperty("application") List<Application> registeredApplications) {
+                        @JsonProperty("versionDelta") Long versionDelta,
+                        @JsonProperty("application") List<Application> registeredApplications) {
         this.applications = new ConcurrentLinkedQueue<Application>();
         this.appNameApplicationMap = new ConcurrentHashMap<String, Application>();
         this.virtualHostNameAppMap = new ConcurrentHashMap<String, VipIndexSupport>();
@@ -118,8 +117,7 @@ public class Applications {
     /**
      * Add the <em>application</em> to the list.
      *
-     * @param app
-     *            the <em>application</em> to be added.
+     * @param app the <em>application</em> to be added.
      */
     public void addApplication(Application app) {
         appNameApplicationMap.put(app.getName().toUpperCase(Locale.ROOT), app);
@@ -141,10 +139,9 @@ public class Applications {
      * Gets the registered <em>application</em> for the given
      * application name.
      *
-     * @param appName
-     *            the application name for which the result need to be fetched.
+     * @param appName the application name for which the result need to be fetched.
      * @return the registered application for the given application
-     *         name.
+     * name.
      */
     public Application getRegisteredApplications(String appName) {
         return appNameApplicationMap.get(appName.toUpperCase(Locale.ROOT));
@@ -153,37 +150,35 @@ public class Applications {
     /**
      * Gets the list of <em>instances</em> associated to a virtual host name.
      *
-     * @param virtualHostName
-     *            the virtual hostname for which the instances need to be
-     *            returned.
+     * @param virtualHostName the virtual hostname for which the instances need to be
+     *                        returned.
      * @return list of <em>instances</em>.
      */
     public List<InstanceInfo> getInstancesByVirtualHostName(String virtualHostName) {
         return Optional.ofNullable(this.virtualHostNameAppMap.get(virtualHostName.toUpperCase(Locale.ROOT)))
-            .map(VipIndexSupport::getVipList)
-            .map(AtomicReference::get)
-            .orElseGet(Collections::emptyList); 
+                .map(VipIndexSupport::getVipList)
+                .map(AtomicReference::get)
+                .orElseGet(Collections::emptyList);
     }
 
     /**
      * Gets the list of secure <em>instances</em> associated to a virtual host
      * name.
      *
-     * @param secureVirtualHostName
-     *            the virtual hostname for which the secure instances need to be
-     *            returned.
+     * @param secureVirtualHostName the virtual hostname for which the secure instances need to be
+     *                              returned.
      * @return list of <em>instances</em>.
      */
     public List<InstanceInfo> getInstancesBySecureVirtualHostName(String secureVirtualHostName) {
         return Optional.ofNullable(this.secureVirtualHostNameAppMap.get(secureVirtualHostName.toUpperCase(Locale.ROOT)))
                 .map(VipIndexSupport::getVipList)
                 .map(AtomicReference::get)
-                .orElseGet(Collections::emptyList);        
+                .orElseGet(Collections::emptyList);
     }
 
     /**
      * @return a weakly consistent size of the number of instances in all the
-     *         applications
+     * applications
      */
     public int size() {
         return applications.stream().mapToInt(Application::size).sum();
@@ -203,8 +198,7 @@ public class Applications {
     /**
      * Used by the eureka server. Not for external use.
      *
-     * @param hashCode
-     *            the hash code to assign for this app collection
+     * @param hashCode the hash code to assign for this app collection
      */
     public void setAppsHashCode(String hashCode) {
         this.appsHashCode = hashCode;
@@ -212,10 +206,9 @@ public class Applications {
 
     /**
      * Used by the eureka server. Not for external use.
-     * 
-     * @return the string indicating the hashcode based on the applications
-     *         stored.
      *
+     * @return the string indicating the hashcode based on the applications
+     * stored.
      */
     @JsonIgnore // Handled directly due to legacy name formatting
     public String getAppsHashCode() {
@@ -227,7 +220,7 @@ public class Applications {
      * comparison of instances between eureka server and eureka client.
      *
      * @return the internal hash code representation indicating the information
-     *         about the instances.
+     * about the instances.
      */
     @JsonIgnore
     public String getReconcileHashCode() {
@@ -239,9 +232,8 @@ public class Applications {
     /**
      * Populates the provided instance count map. The instance count map is used
      * as part of the general app list synchronization mechanism.
-     * 
-     * @param instanceCountMap
-     *            the map to populate
+     *
+     * @param instanceCountMap the map to populate
      */
     public void populateInstanceCountMap(Map<String, AtomicInteger> instanceCountMap) {
         for (Application app : this.getRegisteredApplications()) {
@@ -257,9 +249,8 @@ public class Applications {
      * Gets the reconciliation hashcode. The hashcode is used to determine
      * whether the applications list has changed since the last time it was
      * acquired.
-     * 
-     * @param instanceCountMap
-     *            the instance count map to use for generating the hash
+     *
+     * @param instanceCountMap the instance count map to use for generating the hash
      * @return the hash code for this instance
      */
     public static String getReconcileHashCode(Map<String, AtomicInteger> instanceCountMap) {
@@ -274,9 +265,8 @@ public class Applications {
     /**
      * Shuffles the provided instances so that they will not always be returned
      * in the same order.
-     * 
-     * @param filterUpInstances
-     *            whether to return only UP instances
+     *
+     * @param filterUpInstances whether to return only UP instances
      */
     public void shuffleInstances(boolean filterUpInstances) {
         shuffleInstances(filterUpInstances, false, null, null, null);
@@ -285,26 +275,23 @@ public class Applications {
     /**
      * Shuffles a whole region so that the instances will not always be returned
      * in the same order.
-     * 
-     * @param remoteRegionsRegistry
-     *            the map of remote region names to their registries
-     * @param clientConfig
-     *            the {@link EurekaClientConfig}, whose settings will be used to
-     *            determine whether to filter to only UP instances
-     * @param instanceRegionChecker
-     *            the instance region checker
+     *
+     * @param remoteRegionsRegistry the map of remote region names to their registries
+     * @param clientConfig          the {@link EurekaClientConfig}, whose settings will be used to
+     *                              determine whether to filter to only UP instances
+     * @param instanceRegionChecker the instance region checker
      */
     public void shuffleAndIndexInstances(Map<String, Applications> remoteRegionsRegistry,
-            EurekaClientConfig clientConfig, InstanceRegionChecker instanceRegionChecker) {
+                                         EurekaClientConfig clientConfig, InstanceRegionChecker instanceRegionChecker) {
         shuffleInstances(clientConfig.shouldFilterOnlyUpInstances(), true, remoteRegionsRegistry, clientConfig,
                 instanceRegionChecker);
     }
 
-    private void shuffleInstances(boolean filterUpInstances, 
-            boolean indexByRemoteRegions,
-            @Nullable Map<String, Applications> remoteRegionsRegistry, 
-            @Nullable EurekaClientConfig clientConfig,
-            @Nullable InstanceRegionChecker instanceRegionChecker) {
+    private void shuffleInstances(boolean filterUpInstances,
+                                  boolean indexByRemoteRegions,
+                                  @Nullable Map<String, Applications> remoteRegionsRegistry,
+                                  @Nullable EurekaClientConfig clientConfig,
+                                  @Nullable InstanceRegionChecker instanceRegionChecker) {
         Map<String, VipIndexSupport> secureVirtualHostNameAppMap = new HashMap<>();
         Map<String, VipIndexSupport> virtualHostNameAppMap = new HashMap<>();
         for (Application application : appNameApplicationMap.values()) {
@@ -328,11 +315,9 @@ public class Applications {
      * Gets the next round-robin index for the given virtual host name. This
      * index is reset after every registry fetch cycle.
      *
-     * @param virtualHostname
-     *            the virtual host name.
-     * @param secure
-     *            indicates whether it is a secure request or a non-secure
-     *            request.
+     * @param virtualHostname the virtual host name.
+     * @param secure          indicates whether it is a secure request or a non-secure
+     *                        request.
      * @return AtomicLong value representing the next round-robin index.
      */
     public AtomicLong getNextIndex(String virtualHostname, boolean secure) {
@@ -345,7 +330,6 @@ public class Applications {
     /**
      * Shuffle the instances and filter for only {@link InstanceStatus#UP} if
      * required.
-     *
      */
     private void shuffleAndFilterInstances(Map<String, VipIndexSupport> srcMap, boolean filterUpInstances) {
 
@@ -370,7 +354,6 @@ public class Applications {
      * Add the instance to the given map based if the vip address matches with
      * that of the instance. Note that an instance can be mapped to multiple vip
      * addresses.
-     *
      */
     private void addInstanceToMap(InstanceInfo info, String vipAddresses, Map<String, VipIndexSupport> vipMap) {
         if (vipAddresses != null) {
@@ -384,12 +367,11 @@ public class Applications {
 
     /**
      * Adds the instances to the internal vip address map.
-     * 
-     * @param app
-     *            - the applications for which the instances need to be added.
+     *
+     * @param app - the applications for which the instances need to be added.
      */
     private void addInstancesToVIPMaps(Application app, Map<String, VipIndexSupport> virtualHostNameAppMap,
-            Map<String, VipIndexSupport> secureVirtualHostNameAppMap) {
+                                       Map<String, VipIndexSupport> secureVirtualHostNameAppMap) {
         // Check and add the instances to the their respective virtual host name
         // mappings
         for (InstanceInfo info : app.getInstances()) {

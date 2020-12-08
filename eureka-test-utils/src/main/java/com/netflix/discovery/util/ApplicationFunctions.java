@@ -106,7 +106,7 @@ public final class ApplicationFunctions {
 
     public static int countInstances(Applications applications) {
         int count = 0;
-        for(Application application: applications.getRegisteredApplications()) {
+        for (Application application : applications.getRegisteredApplications()) {
             count += application.getInstances().size();
         }
         return count;

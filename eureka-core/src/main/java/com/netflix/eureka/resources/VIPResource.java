@@ -33,7 +33,6 @@ import javax.ws.rs.core.Response;
  * A <em>jersey</em> resource for retrieving all instances with a given VIP address.
  *
  * @author Karthik Ranganathan
- *
  */
 @Path("/{version}/vips")
 @Produces({"application/xml", "application/json"})

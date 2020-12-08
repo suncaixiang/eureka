@@ -9,6 +9,7 @@ import com.netflix.discovery.EurekaNamespace;
 
 /**
  * This provider is necessary because the namespace is optional.
+ *
  * @author elandau
  */
 public class CloudInstanceConfigProvider implements Provider<CloudInstanceConfig> {

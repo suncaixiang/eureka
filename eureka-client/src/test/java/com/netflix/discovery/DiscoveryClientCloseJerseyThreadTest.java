@@ -1,6 +1,7 @@
 package com.netflix.discovery;
 
 import java.util.Set;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

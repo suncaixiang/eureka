@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This is a rule that checks if the ASG for an instance is enabled or not and if not then it brings the instance
  * OUT_OF_SERVICE.
- *
+ * <p>
  * Created by Nikos Michalakis on 7/14/16.
  */
 public class AsgEnabledRule implements InstanceStatusOverrideRule {

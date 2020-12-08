@@ -36,7 +36,6 @@ import com.thoughtworks.xstream.XStream;
  * <p>
  *
  * @author Karthik Ranganathan, Greg Kim.
- *
  */
 public class EntityBodyConverter implements ISerializer {
 

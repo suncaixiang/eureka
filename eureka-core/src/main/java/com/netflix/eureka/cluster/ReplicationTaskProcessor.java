@@ -30,8 +30,8 @@ class ReplicationTaskProcessor implements TaskProcessor<ReplicationTask> {
     private final String peerId;
 
     private volatile long lastNetworkErrorTime;
-    
-    private static final Pattern READ_TIME_OUT_PATTERN = Pattern.compile(".*read.*time.*out.*"); 
+
+    private static final Pattern READ_TIME_OUT_PATTERN = Pattern.compile(".*read.*time.*out.*");
 
     ReplicationTaskProcessor(String peerId, HttpReplicationClient replicationClient) {
         this.replicationClient = replicationClient;
@@ -57,9 +57,9 @@ class ReplicationTaskProcessor implements TaskProcessor<ReplicationTask> {
                 return ProcessingResult.PermanentError;
             }
         } catch (Throwable e) {
-        	if (maybeReadTimeOut(e)) {
+            if (maybeReadTimeOut(e)) {
                 logger.error("It seems to be a socket read timeout exception, it will retry later. if it continues to happen and some eureka node occupied all the cpu time, you should set property 'eureka.server.peer-node-read-timeout-ms' to a bigger value", e);
-            	//read timeout exception is more Congestion then TransientError, return Congestion for longer delay 
+                //read timeout exception is more Congestion then TransientError, return Congestion for longer delay
                 return ProcessingResult.Congestion;
             } else if (isNetworkConnectException(e)) {
                 logNetworkErrorSample(task, e);
@@ -94,7 +94,7 @@ class ReplicationTaskProcessor implements TaskProcessor<ReplicationTask> {
         } catch (Throwable e) {
             if (maybeReadTimeOut(e)) {
                 logger.error("It seems to be a socket read timeout exception, it will retry later. if it continues to happen and some eureka node occupied all the cpu time, you should set property 'eureka.server.peer-node-read-timeout-ms' to a bigger value", e);
-            	//read timeout exception is more Congestion then TransientError, return Congestion for longer delay 
+                //read timeout exception is more Congestion then TransientError, return Congestion for longer delay
                 return ProcessingResult.Congestion;
             } else if (isNetworkConnectException(e)) {
                 logNetworkErrorSample(null, e);
@@ -169,8 +169,7 @@ class ReplicationTaskProcessor implements TaskProcessor<ReplicationTask> {
      * Check if the exception is some sort of network timeout exception (ie)
      * read,connect.
      *
-     * @param e
-     *            The exception for which the information needs to be found.
+     * @param e The exception for which the information needs to be found.
      * @return true, if it is a network timeout, false otherwise.
      */
     private static boolean isNetworkConnectException(Throwable e) {
@@ -182,29 +181,28 @@ class ReplicationTaskProcessor implements TaskProcessor<ReplicationTask> {
         } while (e != null);
         return false;
     }
-    
+
     /**
      * Check if the exception is socket read time out exception
      *
-     * @param e
-     *            The exception for which the information needs to be found.
+     * @param e The exception for which the information needs to be found.
      * @return true, if it may be a socket read time out exception.
      */
     private static boolean maybeReadTimeOut(Throwable e) {
         do {
             if (IOException.class.isInstance(e)) {
-            	String message = e.getMessage().toLowerCase();
-            	Matcher matcher = READ_TIME_OUT_PATTERN.matcher(message);
-            	if(matcher.find()) {
-            		return true;
-            	}
+                String message = e.getMessage().toLowerCase();
+                Matcher matcher = READ_TIME_OUT_PATTERN.matcher(message);
+                if (matcher.find()) {
+                    return true;
+                }
             }
             e = e.getCause();
         } while (e != null);
         return false;
     }
-    
-    
+
+
     private static ReplicationInstance createReplicationInstanceOf(InstanceReplicationTask task) {
         ReplicationInstanceBuilder instanceBuilder = aReplicationInstance();
         instanceBuilder.withAppName(task.getAppName());

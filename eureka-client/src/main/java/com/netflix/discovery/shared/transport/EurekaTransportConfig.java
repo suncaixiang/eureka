@@ -62,10 +62,10 @@ public interface EurekaTransportConfig {
 
     /**
      * Can be used to specify different bootstrap resolve strategies. Current supported strategies are:
-     *  - default (if no match): bootstrap from dns txt records or static config hostnames
-     *  - composite: bootstrap from local registry if data is available
-     *    and warm (see {@link #getApplicationsResolverDataStalenessThresholdSeconds()}, otherwise
-     *    fall back to a backing default
+     * - default (if no match): bootstrap from dns txt records or static config hostnames
+     * - composite: bootstrap from local registry if data is available
+     * and warm (see {@link #getApplicationsResolverDataStalenessThresholdSeconds()}, otherwise
+     * fall back to a backing default
      *
      * @return null for the default strategy, by default
      */
@@ -73,7 +73,7 @@ public interface EurekaTransportConfig {
 
     /**
      * By default, the transport uses the same (bootstrap) resolver for queries.
-     *
+     * <p>
      * Set this property to false to use an indirect resolver to resolve query targets
      * via {@link #getReadClusterVip()}. This indirect resolver may or may not return the same
      * targets as the bootstrap servers depending on how servers are setup.

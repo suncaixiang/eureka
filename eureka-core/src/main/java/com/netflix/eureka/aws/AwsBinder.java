@@ -5,5 +5,6 @@ package com.netflix.eureka.aws;
  */
 public interface AwsBinder {
     void start() throws Exception;
+
     void shutdown() throws Exception;
 }

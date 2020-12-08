@@ -15,6 +15,7 @@ import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
 import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -118,7 +119,6 @@ public class ReplicationConcurrencyTest {
         InstanceInfo newServer1Sees = server1.registry.getInstanceByAppAndId(appName, id);
         assertThat(newServer1Sees.getStatus(), equalTo(instance2.getStatus()));
     }
-
 
 
     private static class MockServer {

@@ -16,7 +16,6 @@ import org.apache.http.params.HttpParams;
  * connection reuse statistics, as its underlying connection pool.
  *
  * @author awang
- *
  */
 public class MonitoredConnectionManager extends ThreadSafeClientConnManager {
 
